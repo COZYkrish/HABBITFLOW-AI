@@ -39,7 +39,8 @@ export const TodayHabits = ({ habits }: TodayHabitsProps) => {
   const { mutate: logHabit, isPending } = useLogHabit();
 
   const handleToggle = (habit: TodayHabit) => {
-    const today = new Date().toISOString().slice(0, 10);
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     logHabit({
       id: habit.id,
       data: { date: today, completed: habit.status !== 'completed' },

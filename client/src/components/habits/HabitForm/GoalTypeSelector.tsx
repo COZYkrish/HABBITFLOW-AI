@@ -51,8 +51,9 @@ export const GoalTypeSelector = ({ value, targetValue, onChange, onTargetChange 
             min={1}
             value={targetValue}
             onChange={(e) => onTargetChange(Number(e.target.value))}
-            className="w-24 px-3 py-1.5 rounded-lg bg-transparent text-foreground border border-border text-sm
-                       focus:outline-none focus:border-foreground/30 tabular-nums"
+            className="w-24 px-3 py-1.5 rounded-lg bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 text-foreground text-sm
+                       transition-colors hover:bg-white/20 dark:hover:bg-white/5
+                       focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/30 tabular-nums"
             aria-label="Target value"
           />
         </div>

@@ -220,8 +220,9 @@ export const HabitForm = ({
             min={1}
             max={1440}
             {...register('estimatedDuration', { valueAsNumber: true })}
-            className="w-24 px-3 py-1.5 rounded-lg bg-transparent text-foreground border border-border text-sm
-                       focus:outline-none focus:border-foreground/30 tabular-nums"
+            className="w-24 px-3 py-1.5 rounded-lg bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 text-foreground text-sm
+                       transition-colors hover:bg-white/20 dark:hover:bg-white/5
+                       focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/30 tabular-nums"
           />
         </div>
       </section>
@@ -257,8 +258,9 @@ export const HabitForm = ({
           <input
             type="time"
             {...register('reminder.time')}
-            className="px-3 py-1.5 rounded-lg bg-transparent text-foreground border border-border text-sm
-                       focus:outline-none focus:border-foreground/30"
+            className="px-3 py-1.5 rounded-lg bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 text-foreground text-sm
+                       transition-colors hover:bg-white/20 dark:hover:bg-white/5
+                       focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/30"
             aria-label="Reminder time"
           />
         )}

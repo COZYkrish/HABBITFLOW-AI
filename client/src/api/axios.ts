@@ -11,12 +11,16 @@ export const apiClient = axios.create({
   },
 });
 
-// Request Interceptor: Attach Access Token
+// Request Interceptor: Attach Access Token & Timezone
 apiClient.interceptors.request.use(
   (config) => {
     const accessToken = useAuthStore.getState().accessToken;
-    if (accessToken && config.headers) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+    if (config.headers) {
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+      // Pass the user's exact local timezone to the server
+      config.headers['x-timezone'] = Intl.DateTimeFormat().resolvedOptions().timeZone;
     }
     return config;
   },

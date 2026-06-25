@@ -88,9 +88,9 @@ export const TopNavbar = ({ onMenuToggle, isSidebarOpen }: TopNavbarProps) => {
       <button
         type="button"
         className="hidden md:flex flex-1 max-w-xs items-center gap-2 px-4 h-8 rounded-lg
-                   border border-border/50 bg-foreground/[0.02] text-xs text-muted-foreground
-                   hover:border-border hover:bg-foreground/[0.04] transition-colors
-                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+                   bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 text-xs text-muted-foreground
+                   hover:border-white/30 hover:bg-white/20 dark:hover:bg-white/5 transition-colors
+                   focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/30"
         aria-label="Search (coming soon)"
         disabled
       >

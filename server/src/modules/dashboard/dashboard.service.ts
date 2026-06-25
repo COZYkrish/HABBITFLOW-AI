@@ -15,11 +15,11 @@ import type {
  * Now powered by real Habit and HabitLog data (Phase 5+).
  */
 export class DashboardService {
-  static async getSummary(userId: string): Promise<DashboardSummary> {
+  static async getSummary(userId: string, timezone: string = 'UTC'): Promise<DashboardSummary> {
     const user = await User.findById(userId).lean();
     if (!user) throw new Error('User not found');
 
-    const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    const today = new Date().toLocaleDateString('en-CA', { timeZone: timezone }); // YYYY-MM-DD
 
     // Fetch in parallel for performance
     const [
@@ -31,14 +31,14 @@ export class DashboardService {
       Habit.find({ userId, status: 'active', deletedAt: null }).lean(),
       HabitLog.find({ userId, date: today }).lean(),
       HabitLog.find({ userId }).sort({ createdAt: -1 }).limit(20).populate('habitId', 'title icon category').lean(),
-      DashboardService.getWeeklyLogs(userId),
+      DashboardService.getWeeklyLogs(userId, timezone),
     ]);
 
     // ── Today's habits ───────────────────────────────────────────────────────
     const completedToday = new Set(todayLogs.filter((l) => l.completed).map((l) => String(l.habitId)));
 
     const todayHabits: TodayHabit[] = activeHabits
-      .filter((h) => DashboardService.isScheduledToday(h.repeatSchedule))
+      .filter((h) => DashboardService.isScheduledToday(h.repeatSchedule, timezone))
       .map((h) => ({
         id: String(h._id),
         name: h.title,
@@ -65,12 +65,27 @@ export class DashboardService {
         };
       });
 
-    // ── Weekly summary ─────────────────────────────────────────────────────
-    const weeklySummary = DashboardService.buildWeeklySummary(weeklyLogs, activeHabits.length, user.statistics?.currentStreak ?? 0);
-
     // ── Streaks & productivity ─────────────────────────────────────────────
-    const currentStreak = user.statistics?.currentStreak ?? 0;
+    let currentStreak = user.statistics?.currentStreak ?? 0;
     const bestStreak = user.statistics?.longestStreak ?? 0;
+
+    // Dynamic streak break check:
+    // If lastCompletedAt exists and it is before yesterday (in the user's timezone), the streak is broken.
+    if (currentStreak > 0 && user.statistics?.lastCompletedAt) {
+      const lastCompleted = new Date(user.statistics.lastCompletedAt).toLocaleDateString('en-CA', { timeZone: timezone });
+      
+      const yesterdayDate = new Date();
+      yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+      const yesterday = yesterdayDate.toLocaleDateString('en-CA', { timeZone: timezone });
+
+      // If last completed date is strictly before yesterday, the streak is lost.
+      if (lastCompleted < yesterday) {
+        currentStreak = 0;
+      }
+    }
+
+    // ── Weekly summary ─────────────────────────────────────────────────────
+    const weeklySummary = DashboardService.buildWeeklySummary(weeklyLogs, activeHabits.length, currentStreak, timezone);
     const productivityScore = DashboardService.computeProductivityScore(
       todayHabits.filter((h) => h.status === 'completed').length,
       todayHabits.length
@@ -96,8 +111,10 @@ export class DashboardService {
 
   // ── Private helpers ─────────────────────────────────────────────────────
 
-  private static isScheduledToday(schedule: { type: string; days: number[] }): boolean {
-    const day = new Date().getDay(); // 0=Sun
+  private static isScheduledToday(schedule: { type: string; days: number[] }, timezone: string): boolean {
+    const dayStr = new Date().toLocaleDateString('en-US', { timeZone: timezone, weekday: 'short' });
+    const daysMap: Record<string, number> = { 'Sun': 0, 'Mon': 1, 'Tue': 2, 'Wed': 3, 'Thu': 4, 'Fri': 5, 'Sat': 6 };
+    const day = daysMap[dayStr]; // 0=Sun
     switch (schedule?.type) {
       case 'daily': return true;
       case 'weekdays': return day >= 1 && day <= 5;
@@ -107,23 +124,23 @@ export class DashboardService {
     }
   }
 
-  private static async getWeeklyLogs(userId: string): Promise<any[]> {
+  private static async getWeeklyLogs(userId: string, timezone: string): Promise<any[]> {
     const today = new Date();
     const weekAgo = new Date(today);
     weekAgo.setDate(today.getDate() - 6);
-    const from = weekAgo.toISOString().slice(0, 10);
-    const to = today.toISOString().slice(0, 10);
+    const from = weekAgo.toLocaleDateString('en-CA', { timeZone: timezone });
+    const to = today.toLocaleDateString('en-CA', { timeZone: timezone });
     return HabitLog.find({ userId, date: { $gte: from, $lte: to } }).lean();
   }
 
-  private static buildWeeklySummary(logs: any[], totalHabits: number, streak: number): WeeklySummary {
+  private static buildWeeklySummary(logs: any[], totalHabits: number, streak: number, timezone: string): WeeklySummary {
     const today = new Date();
     const dailyRates: number[] = [];
 
     for (let i = 6; i >= 0; i--) {
       const d = new Date(today);
       d.setDate(today.getDate() - i);
-      const dateStr = d.toISOString().slice(0, 10);
+      const dateStr = d.toLocaleDateString('en-CA', { timeZone: timezone });
       const dayLogs = logs.filter((l) => l.date === dateStr);
       const completed = dayLogs.filter((l) => l.completed).length;
       const rate = totalHabits > 0 ? Math.round((completed / totalHabits) * 100) : 0;

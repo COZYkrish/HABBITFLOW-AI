@@ -49,8 +49,9 @@ export const HabitFilters = () => {
             placeholder="Search habits..."
             value={filters.search ?? ''}
             onChange={(e) => setFilter('search', e.target.value)}
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-foreground/[0.03] border border-border
-                       text-sm placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30"
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20
+                       transition-colors hover:bg-white/20 dark:hover:bg-white/5 text-sm text-foreground
+                       placeholder:text-muted-foreground/60 focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/30"
             aria-label="Search habits"
           />
           <span

@@ -48,10 +48,20 @@ export const HabitFormModal = ({ mode }: HabitFormModalProps) => {
   }, [isOpen]);
 
   const handleSubmit = (data: CreateHabitData) => {
+    const payload = { ...data };
+    if (!payload.reminder?.enabled) {
+      if (payload.reminder) {
+        delete payload.reminder.time;
+        delete payload.reminder.timezone;
+      }
+    } else if (payload.reminder.time === '') {
+      delete payload.reminder.time;
+    }
+
     if (mode === 'create') {
-      createHabit(data, { onSuccess: close });
+      createHabit(payload, { onSuccess: close });
     } else if (selectedHabitId) {
-      updateHabit({ id: selectedHabitId, data }, { onSuccess: close });
+      updateHabit({ id: selectedHabitId, data: payload }, { onSuccess: close });
     }
   };
 

@@ -10,7 +10,8 @@ export class DashboardController {
     try {
       // req.userId is injected by authenticate middleware from Phase 3
       const userId = (req as any).userId as string;
-      const data = await DashboardService.getSummary(userId);
+      const timezone = req.headers['x-timezone'] as string || 'UTC';
+      const data = await DashboardService.getSummary(userId, timezone);
 
       res.status(200).json({
         success: true,
