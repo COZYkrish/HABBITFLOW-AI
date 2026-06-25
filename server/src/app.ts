@@ -28,9 +28,11 @@ app.get('/health', (req, res) => {
 });
 
 import authRoutes from './modules/auth/auth.routes';
+import dashboardRoutes from './modules/dashboard/dashboard.routes';
 
 // Feature-based module routes
 app.use(`${env.API_PREFIX}/auth`, authRoutes);
+app.use(`${env.API_PREFIX}/dashboard`, dashboardRoutes);
 // app.use(`${env.API_PREFIX}/habits`, habitRoutes);
 
 // Error Handling
