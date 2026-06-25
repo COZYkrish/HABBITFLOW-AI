@@ -2,7 +2,6 @@ import {
   useQuery,
   useMutation,
   useQueryClient,
-  type InfiniteData,
 } from '@tanstack/react-query';
 import { HabitApiService } from '../api/habit.service';
 import type {

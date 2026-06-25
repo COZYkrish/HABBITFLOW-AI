@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -24,7 +23,7 @@ const habitFormSchema = z.object({
   targetValue: z.number().min(1),
   estimatedDuration: z.number().min(1).max(1440),
   repeatSchedule: z.object({
-    type: z.string(),
+    type: z.enum(['daily', 'weekdays', 'weekends', 'weekly', 'monthly', 'yearly', 'custom']),
     days: z.array(z.number()),
     dayOfMonth: z.number().optional(),
   }),
@@ -82,7 +81,6 @@ export const HabitForm = ({
     },
   });
 
-  const goalType = watch('goalType');
   const repeatType = watch('repeatSchedule.type');
   const repeatDays = watch('repeatSchedule.days');
   const reminderEnabled = watch('reminder.enabled');

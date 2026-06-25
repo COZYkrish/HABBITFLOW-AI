@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { HabitStatus, HabitPriority, ListHabitsParams } from '../types/habit.types';
+import type { ListHabitsParams } from '../types/habit.types';
 
 type ViewMode = 'grid' | 'list';
 
