@@ -1,0 +1,51 @@
+name: HabitFlow AI CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: '**/package-lock.json'
+
+    # Client Steps
+    - name: Install Client Dependencies
+      working-directory: ./client
+      run: npm ci
+
+    - name: Lint Client
+      working-directory: ./client
+      run: npm run lint
+
+    - name: Build Client
+      working-directory: ./client
+      run: npm run build
+
+    # Server Steps
+    - name: Install Server Dependencies
+      working-directory: ./server
+      run: npm ci
+
+    - name: Lint Server
+      working-directory: ./server
+      run: npm run lint
+
+    - name: Build Server
+      working-directory: ./server
+      run: npm run build
