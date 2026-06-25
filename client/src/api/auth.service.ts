@@ -7,6 +7,19 @@ export const AuthService = {
     return response.data;
   },
 
+  async checkSession() {
+    try {
+      const response = await apiClient.post('/auth/refresh');
+      if (response.data.success) {
+        useAuthStore.getState().setAuth(response.data.user, response.data.accessToken);
+      }
+      return response.data;
+    } catch (error) {
+      useAuthStore.getState().setLoading(false);
+      throw error;
+    }
+  },
+
   async login(data: any) {
     const response = await apiClient.post('/auth/login', data);
     if (response.data.success) {

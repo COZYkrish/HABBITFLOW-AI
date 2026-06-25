@@ -160,7 +160,19 @@ export class AuthService {
       expiresAt,
     });
 
-    return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+    return {
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        preferences: user.preferences,
+        statistics: user.statistics,
+        role: user.role,
+      },
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    };
   }
 
   static async forgotPassword(email: string) {

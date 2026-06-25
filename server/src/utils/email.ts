@@ -23,6 +23,17 @@ const createTransporter = () => {
 
 export const sendEmail = async (options: SendEmailOptions): Promise<void> => {
   try {
+    // If we are using the placeholder email credentials, just mock the email sending.
+    if (!env.EMAIL_USER || env.EMAIL_USER === 'your_email_user') {
+      logger.info('===================================================');
+      logger.info(`MOCK EMAIL SENT TO: ${options.to}`);
+      logger.info(`SUBJECT: ${options.subject}`);
+      logger.info(`BODY:`);
+      logger.info(options.html || options.text);
+      logger.info('===================================================');
+      return;
+    }
+
     const transporter = createTransporter();
     
     const info = await transporter.sendMail({

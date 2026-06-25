@@ -33,8 +33,8 @@ export class AuthController {
     try {
       const result = await AuthService.register(req.body);
       res.status(201).json(result);
-    } catch (error) {
-      next(error);
+    } catch (error: any) {
+      next({ message: error.message, statusCode: 400 });
     }
   }
 
@@ -43,8 +43,8 @@ export class AuthController {
       const { token } = req.body;
       const result = await AuthService.verifyEmail(token);
       res.status(200).json(result);
-    } catch (error) {
-      next(error);
+    } catch (error: any) {
+      next({ message: error.message, statusCode: 400 });
     }
   }
 
@@ -60,8 +60,8 @@ export class AuthController {
         user: result.user,
         accessToken: result.accessToken,
       });
-    } catch (error) {
-      next(error);
+    } catch (error: any) {
+      next({ message: error.message, statusCode: 400 });
     }
   }
 
@@ -87,11 +87,12 @@ export class AuthController {
 
       res.status(200).json({
         success: true,
+        user: result.user,
         accessToken: result.accessToken,
       });
-    } catch (error) {
+    } catch (error: any) {
       clearRefreshCookie(res);
-      next(error);
+      next({ message: error.message, statusCode: 401 });
     }
   }
 
@@ -100,8 +101,8 @@ export class AuthController {
       const { email } = req.body;
       const result = await AuthService.forgotPassword(email);
       res.status(200).json(result);
-    } catch (error) {
-      next(error);
+    } catch (error: any) {
+      next({ message: error.message, statusCode: 400 });
     }
   }
 
@@ -109,8 +110,8 @@ export class AuthController {
     try {
       const result = await AuthService.resetPassword(req.body);
       res.status(200).json(result);
-    } catch (error) {
-      next(error);
+    } catch (error: any) {
+      next({ message: error.message, statusCode: 400 });
     }
   }
 }
