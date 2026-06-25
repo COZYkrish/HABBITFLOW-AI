@@ -109,7 +109,7 @@ export const HabitForm = ({
             rows={2}
             placeholder="Optional description..."
             {...register('description')}
-            className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border text-sm
+            className="w-full px-3 py-2 rounded-xl bg-transparent text-foreground border border-border text-sm
                        placeholder:text-muted-foreground/40 focus:outline-none focus:border-foreground/30
                        resize-none"
           />
@@ -220,7 +220,7 @@ export const HabitForm = ({
             min={1}
             max={1440}
             {...register('estimatedDuration', { valueAsNumber: true })}
-            className="w-24 px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-sm
+            className="w-24 px-3 py-1.5 rounded-lg bg-transparent text-foreground border border-border text-sm
                        focus:outline-none focus:border-foreground/30 tabular-nums"
           />
         </div>
@@ -257,7 +257,7 @@ export const HabitForm = ({
           <input
             type="time"
             {...register('reminder.time')}
-            className="px-3 py-1.5 rounded-lg bg-muted/50 border border-border text-sm
+            className="px-3 py-1.5 rounded-lg bg-transparent text-foreground border border-border text-sm
                        focus:outline-none focus:border-foreground/30"
             aria-label="Reminder time"
           />
@@ -273,7 +273,7 @@ export const HabitForm = ({
           maxLength={2000}
           placeholder="Any notes about this habit..."
           {...register('notes')}
-          className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border text-sm
+          className="w-full px-3 py-2 rounded-xl bg-transparent text-foreground border border-border text-sm
                      placeholder:text-muted-foreground/40 focus:outline-none focus:border-foreground/30
                      resize-none"
         />

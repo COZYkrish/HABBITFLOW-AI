@@ -27,7 +27,7 @@ export const IconPicker = ({ value, onChange }: IconPickerProps) => {
         placeholder="Search icons..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="w-full px-3 py-2 rounded-lg bg-muted/50 border border-border text-sm
+        className="w-full px-3 py-2 rounded-lg bg-transparent text-foreground border border-border text-sm
                    placeholder:text-muted-foreground/50 focus:outline-none focus:border-foreground/30"
         aria-label="Search icons"
       />
