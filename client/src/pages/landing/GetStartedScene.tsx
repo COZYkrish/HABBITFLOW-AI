@@ -78,8 +78,8 @@ export default function GetStartedScene() {
           >
             <Button
               size="lg"
-              onClick={() => navigate('/auth')}
-              className="rounded-2xl px-10 h-14 text-base font-medium group"
+              onClick={() => navigate('/auth/register')}
+              className="rounded-2xl px-8 h-12 text-base font-medium"
               aria-label="Create free account"
             >
               Create Free Account

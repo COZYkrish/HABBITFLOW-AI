@@ -27,12 +27,14 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Placeholder for feature-based module routes
-// app.use(`${env.API_PREFIX}/auth`, authRoutes);
+import authRoutes from './modules/auth/auth.routes';
+
+// Feature-based module routes
+app.use(`${env.API_PREFIX}/auth`, authRoutes);
 // app.use(`${env.API_PREFIX}/habits`, habitRoutes);
 
 // Error Handling
-app.use('*', notFoundHandler);
+app.use(notFoundHandler);
 app.use(errorHandler);
 
 export default app;

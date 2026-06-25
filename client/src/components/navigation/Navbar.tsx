@@ -86,7 +86,7 @@ export function Navbar() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate('/auth')}
+            onClick={() => navigate('/auth/login')}
             aria-label="Login"
           >
             Login
@@ -94,7 +94,7 @@ export function Navbar() {
           <Button
             variant="default"
             size="sm"
-            onClick={() => navigate('/auth')}
+            onClick={() => navigate('/auth/register')}
             aria-label="Get Started"
             className="rounded-xl"
           >
@@ -135,10 +135,10 @@ export function Navbar() {
               </button>
             ))}
             <div className="border-t border-border pt-2 mt-1 flex flex-col gap-2">
-              <Button variant="ghost" size="sm" onClick={() => { setMobileOpen(false); navigate('/auth'); }} className="justify-start">
+              <Button variant="ghost" size="sm" onClick={() => { setMobileOpen(false); navigate('/auth/login'); }} className="justify-start">
                 Login
               </Button>
-              <Button variant="default" size="sm" onClick={() => { setMobileOpen(false); navigate('/auth'); }} className="rounded-xl">
+              <Button variant="default" size="sm" onClick={() => { setMobileOpen(false); navigate('/auth/register'); }} className="rounded-xl">
                 Get Started
               </Button>
             </div>
