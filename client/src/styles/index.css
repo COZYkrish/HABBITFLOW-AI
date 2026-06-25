@@ -42,6 +42,6 @@
 
 @layer utilities {
   .glass {
-    @apply bg-[var(--color-background)]/80 backdrop-blur-md border border-[var(--color-border)];
+    @apply bg-white/80 dark:bg-black/80 backdrop-blur-md border border-border;
   }
 }
