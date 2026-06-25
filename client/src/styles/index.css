@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-background: #ffffff;
+    --color-foreground: #09090b;
+    --color-primary: #09090b;
+    --color-primary-foreground: #ffffff;
+    --color-muted: #f4f4f5;
+    --color-muted-foreground: #71717a;
+    --color-border: #e4e4e7;
+    --color-card: #ffffff;
+    --color-card-foreground: #09090b;
+    --color-accent: #f4f4f5;
+    --color-accent-foreground: #09090b;
+    --color-glow: rgba(0, 0, 0, 0.05);
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --color-background: #09090b;
+    --color-foreground: #ffffff;
+    --color-primary: #ffffff;
+    --color-primary-foreground: #09090b;
+    --color-muted: #27272a;
+    --color-muted-foreground: #a1a1aa;
+    --color-border: #27272a;
+    --color-card: #09090b;
+    --color-card-foreground: #ffffff;
+    --color-accent: #27272a;
+    --color-accent-foreground: #ffffff;
+    --color-glow: rgba(255, 255, 255, 0.05);
+  }
+
+  body {
+    @apply bg-[var(--color-background)] text-[var(--color-foreground)] antialiased transition-colors duration-300;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-[var(--color-background)]/80 backdrop-blur-md border border-[var(--color-border)];
+  }
+}
