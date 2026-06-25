@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { staggerContainerVariants, staggerItemVariants } from '../../animations/variants';
-import { AuthService } from '../../api/auth.service';
+import { useHabitStore } from '../../store/habitStore';
 
 interface QuickAction {
   id: string;
@@ -15,19 +15,26 @@ interface QuickAction {
 
 /**
  * QuickActionGrid — 2×2 grid of primary dashboard actions.
- * Disabled items are future-ready stubs for later phases.
+ * "Create Habit" now wired to HabitFormModal (Phase 5).
  */
 export const QuickActionGrid = () => {
   const navigate = useNavigate();
+  const { openCreateModal } = useHabitStore();
 
   const ACTIONS: QuickAction[] = [
     {
       id: 'create-habit',
-      label: 'Create Habit',
+      label: 'New Habit',
       icon: '✦',
       description: 'Start a new daily ritual',
-      href: '/dashboard/habits/new',
-      disabled: true, // Phase 5
+      onClick: openCreateModal,
+    },
+    {
+      id: 'all-habits',
+      label: 'All Habits',
+      icon: '◈',
+      description: 'View & manage habits',
+      href: '/dashboard/habits',
     },
     {
       id: 'analytics',
@@ -35,7 +42,7 @@ export const QuickActionGrid = () => {
       icon: '◎',
       description: 'View your progress charts',
       href: '/dashboard/analytics',
-      disabled: true, // Phase 6
+      disabled: true,
     },
     {
       id: 'reports',
@@ -43,25 +50,14 @@ export const QuickActionGrid = () => {
       icon: '▤',
       description: 'Weekly & monthly summaries',
       href: '/dashboard/reports',
-      disabled: true, // Phase 7
-    },
-    {
-      id: 'profile',
-      label: 'Profile',
-      icon: '◉',
-      description: 'Manage your account',
-      href: '/dashboard/profile',
-      disabled: false,
+      disabled: true,
     },
   ];
 
   const handleAction = (action: QuickAction) => {
     if (action.disabled) return;
-    if (action.onClick) {
-      action.onClick();
-    } else if (action.href) {
-      navigate(action.href);
-    }
+    if (action.onClick) action.onClick();
+    else if (action.href) navigate(action.href);
   };
 
   return (

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { staggerContainerVariants, staggerItemVariants } from '../../animations/variants';
+import { useLogHabit } from '../../hooks/useHabits';
 import type { TodayHabit } from '../../types/dashboard.types';
 
 interface TodayHabitsProps {
@@ -18,12 +19,6 @@ const STATUS_LABEL: Record<TodayHabit['status'], string> = {
   skipped: 'Skipped',
 };
 
-const DefaultHabitIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-    <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.5" />
-  </svg>
-);
-
 const EmptyHabits = () => (
   <div className="flex flex-col items-center justify-center py-16 text-center">
     <div className="w-14 h-14 rounded-2xl glass-card flex items-center justify-center mb-4">
@@ -37,10 +32,20 @@ const EmptyHabits = () => (
 );
 
 /**
- * TodayHabits — scrollable list of today's habits.
- * Checkboxes are UI-only in Phase 4; wired in Phase 5 (Habit CRUD).
+ * TodayHabits — real-time habit list from dashboard API.
+ * Completion checkbox calls useLogHabit for instant feedback.
  */
 export const TodayHabits = ({ habits }: TodayHabitsProps) => {
+  const { mutate: logHabit, isPending } = useLogHabit();
+
+  const handleToggle = (habit: TodayHabit) => {
+    const today = new Date().toISOString().slice(0, 10);
+    logHabit({
+      id: habit.id,
+      data: { date: today, completed: habit.status !== 'completed' },
+    });
+  };
+
   if (habits.length === 0) return <EmptyHabits />;
 
   return (
@@ -59,12 +64,16 @@ export const TodayHabits = ({ habits }: TodayHabitsProps) => {
           whileHover={{ x: 4, transition: { duration: 0.2 } }}
           className="glass-card rounded-xl p-4 flex items-center gap-4 cursor-default"
         >
-          {/* Completion checkbox (UI only — wired in Phase 5) */}
+          {/* Completion checkbox — wired to API */}
           <button
             type="button"
-            aria-label={`Mark ${habit.name} as complete`}
+            aria-label={`Mark ${habit.name} as ${habit.status === 'completed' ? 'incomplete' : 'complete'}`}
+            aria-pressed={habit.status === 'completed'}
+            disabled={isPending}
+            onClick={() => handleToggle(habit)}
             className="w-5 h-5 rounded-full border border-border flex-shrink-0 flex items-center justify-center
-                       hover:border-foreground/50 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                       hover:border-foreground/50 transition-colors focus-visible:outline-none focus-visible:ring-2
+                       disabled:opacity-40"
           >
             {habit.status === 'completed' && (
               <div className="w-2.5 h-2.5 rounded-full bg-foreground" />
@@ -72,9 +81,7 @@ export const TodayHabits = ({ habits }: TodayHabitsProps) => {
           </button>
 
           {/* Icon */}
-          <span className="text-xl flex-shrink-0" aria-hidden="true">
-            {habit.icon || <DefaultHabitIcon />}
-          </span>
+          <span className="text-xl flex-shrink-0" aria-hidden="true">{habit.icon}</span>
 
           {/* Info */}
           <div className="flex-1 min-w-0">

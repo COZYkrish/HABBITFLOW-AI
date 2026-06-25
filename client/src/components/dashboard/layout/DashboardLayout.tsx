@@ -18,6 +18,9 @@ import { ReminderList } from '../ReminderList';
 import { SectionTitle } from '../SectionTitle';
 import { useAuthStore } from '../../../store/authStore';
 import { motion } from 'framer-motion';
+import { HabitFormModal } from '../../habits/HabitFormModal';
+import { DeleteDialog } from '../../habits/DeleteDialog';
+import { ArchiveDialog } from '../../habits/ArchiveDialog';
 
 const ErrorCard = ({ message }: { message: string }) => (
   <div className="flex items-center justify-center min-h-[400px]">
@@ -138,6 +141,12 @@ export const DashboardLayout = () => {
           <RightContextPanel data={data} />
         </div>
       </div>
+
+      {/* Global Dashboard Modals */}
+      <HabitFormModal mode="create" />
+      <HabitFormModal mode="edit" />
+      <DeleteDialog />
+      <ArchiveDialog />
     </div>
   );
 };

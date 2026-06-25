@@ -29,7 +29,7 @@ export const sendEmail = async (options: SendEmailOptions): Promise<void> => {
       logger.info(`MOCK EMAIL SENT TO: ${options.to}`);
       logger.info(`SUBJECT: ${options.subject}`);
       logger.info(`BODY:`);
-      logger.info(options.html || options.text);
+      logger.info(options.html ?? options.text ?? '');
       logger.info('===================================================');
       return;
     }

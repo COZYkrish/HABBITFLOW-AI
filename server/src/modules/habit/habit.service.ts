@@ -1,0 +1,190 @@
+import { HabitRepository } from './habit.repository';
+import { HabitMapper } from './habit.mapper';
+import { User } from '../auth/models/User';
+import type {
+  CreateHabitDTO,
+  UpdateHabitDTO,
+  LogHabitDTO,
+  ListHabitsQuery,
+  HabitResponse,
+  PaginatedHabitsResponse,
+  HabitLogResponse,
+  CategoryResponse,
+} from './habit.types';
+
+/**
+ * HabitService — business logic for all habit operations.
+ * Enforces ownership, validates status transitions, updates User statistics.
+ */
+export class HabitService {
+  // ── CRUD ──────────────────────────────────────────────────────────────────
+
+  static async createHabit(userId: string, data: CreateHabitDTO): Promise<HabitResponse> {
+    const habit = await HabitRepository.create(userId, data);
+    await HabitService.incrementUserHabitCount(userId, 1);
+    return HabitMapper.toResponse(habit);
+  }
+
+  static async getHabits(userId: string, query: ListHabitsQuery): Promise<PaginatedHabitsResponse> {
+    const result = await HabitRepository.findAll(userId, query);
+    return {
+      ...result,
+      habits: result.habits.map(HabitMapper.toResponse),
+    };
+  }
+
+  static async getHabitById(userId: string, habitId: string): Promise<HabitResponse> {
+    const habit = await HabitRepository.findById(habitId, userId);
+    if (!habit) throw Object.assign(new Error('Habit not found'), { statusCode: 404 });
+    return HabitMapper.toResponse(habit);
+  }
+
+  static async updateHabit(userId: string, habitId: string, data: UpdateHabitDTO): Promise<HabitResponse> {
+    const habit = await HabitRepository.update(habitId, userId, data);
+    if (!habit) throw Object.assign(new Error('Habit not found'), { statusCode: 404 });
+    return HabitMapper.toResponse(habit);
+  }
+
+  static async deleteHabit(userId: string, habitId: string): Promise<void> {
+    const habit = await HabitRepository.softDelete(habitId, userId);
+    if (!habit) throw Object.assign(new Error('Habit not found'), { statusCode: 404 });
+    await HabitService.incrementUserHabitCount(userId, -1);
+  }
+
+  // ── Status transitions ────────────────────────────────────────────────────
+
+  static async archiveHabit(userId: string, habitId: string): Promise<HabitResponse> {
+    const current = await HabitRepository.findById(habitId, userId);
+    if (!current) throw Object.assign(new Error('Habit not found'), { statusCode: 404 });
+
+    const isArchived = !current.isArchived;
+    const habit = await HabitRepository.setStatus(habitId, userId, {
+      isArchived,
+      status: isArchived ? 'archived' : 'active',
+    });
+    return HabitMapper.toResponse(habit!);
+  }
+
+  static async pauseHabit(userId: string, habitId: string): Promise<HabitResponse> {
+    const current = await HabitRepository.findById(habitId, userId);
+    if (!current) throw Object.assign(new Error('Habit not found'), { statusCode: 404 });
+    if (current.isPaused) throw Object.assign(new Error('Habit is already paused'), { statusCode: 400 });
+
+    const habit = await HabitRepository.setStatus(habitId, userId, {
+      isPaused: true,
+      status: 'paused',
+    });
+    return HabitMapper.toResponse(habit!);
+  }
+
+  static async resumeHabit(userId: string, habitId: string): Promise<HabitResponse> {
+    const current = await HabitRepository.findById(habitId, userId);
+    if (!current) throw Object.assign(new Error('Habit not found'), { statusCode: 404 });
+    if (!current.isPaused) throw Object.assign(new Error('Habit is not paused'), { statusCode: 400 });
+
+    const habit = await HabitRepository.setStatus(habitId, userId, {
+      isPaused: false,
+      status: 'active',
+    });
+    return HabitMapper.toResponse(habit!);
+  }
+
+  static async duplicateHabit(userId: string, habitId: string): Promise<HabitResponse> {
+    const habit = await HabitRepository.duplicate(habitId, userId);
+    if (!habit) throw Object.assign(new Error('Habit not found'), { statusCode: 404 });
+    await HabitService.incrementUserHabitCount(userId, 1);
+    return HabitMapper.toResponse(habit);
+  }
+
+  // ── Habit Logging ──────────────────────────────────────────────────────────
+
+  static async logHabit(userId: string, habitId: string, data: LogHabitDTO): Promise<HabitLogResponse> {
+    // Verify ownership
+    const habit = await HabitRepository.findById(habitId, userId);
+    if (!habit) throw Object.assign(new Error('Habit not found'), { statusCode: 404 });
+
+    const log = await HabitRepository.upsertLog(habitId, userId, data);
+
+    // Recalculate and update streak if completed
+    if (data.completed) {
+      await HabitService.recalculateStreak(habitId, userId);
+    }
+
+    return HabitMapper.toLogResponse(log);
+  }
+
+  static async getHabitLogs(
+    userId: string,
+    habitId: string,
+    fromDate?: string,
+    toDate?: string
+  ): Promise<HabitLogResponse[]> {
+    const habit = await HabitRepository.findById(habitId, userId);
+    if (!habit) throw Object.assign(new Error('Habit not found'), { statusCode: 404 });
+
+    const logs = await HabitRepository.getLogs(habitId, userId, fromDate, toDate);
+    return logs.map(HabitMapper.toLogResponse);
+  }
+
+  // ── Categories ────────────────────────────────────────────────────────────
+
+  static async getCategories(userId: string): Promise<CategoryResponse[]> {
+    const cats = await HabitRepository.getCategories(userId);
+    return cats.map(HabitMapper.toCategoryResponse);
+  }
+
+  // ── Private helpers ───────────────────────────────────────────────────────
+
+  private static async incrementUserHabitCount(userId: string, delta: number) {
+    await User.findByIdAndUpdate(userId, {
+      $inc: { 'statistics.totalHabits': delta },
+    });
+  }
+
+  /**
+   * Recalculates the current streak for a habit after a log event.
+   * Looks at the last N logs sorted by date descending.
+   */
+  private static async recalculateStreak(habitId: string, userId: string): Promise<void> {
+    const logs = await HabitRepository.getLogs(habitId, userId);
+    const sorted = [...logs].sort((a, b) => b.date.localeCompare(a.date));
+
+    let streak = 0;
+    let prev: Date | null = null;
+
+    for (const log of sorted) {
+      if (!log.completed) break;
+      const date = new Date(log.date);
+      if (prev === null) {
+        streak = 1;
+        prev = date;
+        continue;
+      }
+      const diffDays = Math.round((prev.getTime() - date.getTime()) / 86_400_000);
+      if (diffDays === 1) {
+        streak++;
+        prev = date;
+      } else {
+        break;
+      }
+    }
+
+    const { Habit } = await import('./models/Habit');
+    const habit = await Habit.findById(habitId);
+    if (!habit) return;
+
+    const longestStreak = Math.max(streak, habit.statistics.longestStreak ?? 0);
+    habit.statistics.currentStreak = streak;
+    habit.statistics.longestStreak = longestStreak;
+    habit.statistics.completedLogs = sorted.filter((l) => l.completed).length;
+    habit.statistics.totalLogs = sorted.length;
+    habit.statistics.lastCompletedAt = sorted[0]?.completed ? new Date(sorted[0].date) : undefined;
+    await habit.save();
+
+    // Update User-level streak if this exceeds it
+    await User.findByIdAndUpdate(userId, {
+      $max: { 'statistics.longestStreak': longestStreak },
+      $set: { 'statistics.currentStreak': streak },
+    });
+  }
+}

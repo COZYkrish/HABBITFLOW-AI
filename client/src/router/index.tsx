@@ -11,6 +11,7 @@ const Dashboard = React.lazy(() => import('../pages/Dashboard'));
 const NotFound = React.lazy(() => import('../pages/NotFound'));
 const ErrorPage = React.lazy(() => import('../pages/ErrorPage'));
 const PlaceholderPage = React.lazy(() => import('../pages/PlaceholderPage'));
+const HabitsPage = React.lazy(() => import('../pages/dashboard/HabitsPage'));
 
 // Auth Pages
 const Login = React.lazy(() => import('../pages/auth/Login'));
@@ -68,9 +69,8 @@ export const router = createBrowserRouter([
           </AuthGuard>
         ),
         children: [
-          // Future-phase sub-routes — render PlaceholderPage inside DashboardLayout's <Outlet />
-          { path: 'habits', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
-          { path: 'habits/new', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
+          // Sub-routes — render inside DashboardLayout's <Outlet />
+          { path: 'habits', element: <Suspense fallback={WidgetFallback}><HabitsPage /></Suspense> },
           { path: 'analytics', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
           { path: 'reports', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
           { path: 'achievements', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
