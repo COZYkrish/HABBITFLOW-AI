@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { TopNavbar } from './TopNavbar';
 import { RightContextPanel } from './RightContextPanel';
@@ -40,6 +40,8 @@ export const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const { data, isLoading, error } = useDashboard();
   const { user } = useAuthStore();
+  const location = useLocation();
+  const isDashboardRoot = location.pathname === '/dashboard';
 
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
@@ -59,11 +61,11 @@ export const DashboardLayout = () => {
             id="main-content"
             aria-label="Dashboard content"
           >
-            {isLoading ? (
+            {isLoading && isDashboardRoot ? (
               <DashboardSkeleton />
-            ) : error ? (
+            ) : error && isDashboardRoot ? (
               <ErrorCard message={error.message} />
-            ) : (
+            ) : isDashboardRoot ? (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -131,14 +133,14 @@ export const DashboardLayout = () => {
                   </div>
                 </div>
               </motion.div>
-            )}
+            ) : null}
 
             {/* Sub-routes (e.g. /dashboard/profile) render here */}
             <Outlet />
           </main>
 
           {/* Right context panel */}
-          <RightContextPanel data={data} />
+          {isDashboardRoot && <RightContextPanel data={data} />}
         </div>
       </div>
 

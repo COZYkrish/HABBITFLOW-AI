@@ -208,7 +208,7 @@ export const HabitForm = ({
         <RepeatSelector
           type={repeatType}
           days={repeatDays}
-          onTypeChange={(t) => setValue('repeatSchedule.type', t)}
+          onTypeChange={(t) => setValue('repeatSchedule.type', t as any)}
           onDaysChange={(d) => setValue('repeatSchedule.days', d)}
         />
 
