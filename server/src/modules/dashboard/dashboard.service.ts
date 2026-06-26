@@ -105,23 +105,72 @@ export class DashboardService {
       productivityScore,
       recentActivity,
       weeklySummary,
-      upcomingReminders: [],
+      upcomingReminders: DashboardService.getUpcomingReminders(activeHabits, timezone),
     };
   }
 
   // ── Private helpers ─────────────────────────────────────────────────────
 
-  private static isScheduledToday(schedule: { type: string; days: number[] }, timezone: string): boolean {
-    const dayStr = new Date().toLocaleDateString('en-US', { timeZone: timezone, weekday: 'short' });
+  private static isScheduledForDate(schedule: { type: string; days: number[] }, date: Date, timezone: string): boolean {
+    const dayStr = date.toLocaleDateString('en-US', { timeZone: timezone, weekday: 'short' });
     const daysMap: Record<string, number> = { 'Sun': 0, 'Mon': 1, 'Tue': 2, 'Wed': 3, 'Thu': 4, 'Fri': 5, 'Sat': 6 };
     const day = daysMap[dayStr]; // 0=Sun
     switch (schedule?.type) {
       case 'daily': return true;
       case 'weekdays': return day >= 1 && day <= 5;
       case 'weekends': return day === 0 || day === 6;
-      case 'custom': return schedule.days.includes(day);
+      case 'custom': return schedule.days?.includes(day) ?? false;
       default: return true;
     }
+  }
+
+  private static isScheduledToday(schedule: { type: string; days: number[] }, timezone: string): boolean {
+    return this.isScheduledForDate(schedule, new Date(), timezone);
+  }
+
+  private static getUpcomingReminders(habits: any[], timezone: string): UpcomingReminder[] {
+    const reminders: UpcomingReminder[] = [];
+    const now = new Date();
+    const todayStr = now.toLocaleDateString('en-CA', { timeZone: timezone });
+    const timeFormatter = new Intl.DateTimeFormat('en-US', { timeZone: timezone, hour: '2-digit', minute: '2-digit', hour12: false });
+    // Adjust formatter output if it yields "24:00" for midnight or missing leading zero
+    let nowTimeStr = timeFormatter.format(now);
+    if (nowTimeStr.match(/^\d:/)) nowTimeStr = `0${nowTimeStr}`;
+    
+    for (const h of habits) {
+      if (!h.reminder?.enabled || !h.reminder?.time) continue;
+      
+      const time = h.reminder.time; // "08:00"
+      
+      // Check today
+      if (this.isScheduledForDate(h.repeatSchedule, now, timezone)) {
+        if (time > nowTimeStr) {
+          reminders.push({
+            id: String(h._id),
+            habitName: h.title,
+            icon: h.icon,
+            scheduledAt: `${todayStr}T${time}:00`,
+          });
+          continue;
+        }
+      }
+      
+      // Check tomorrow
+      const tomorrow = new Date(now);
+      tomorrow.setDate(now.getDate() + 1);
+      if (this.isScheduledForDate(h.repeatSchedule, tomorrow, timezone)) {
+        const tomorrowStr = tomorrow.toLocaleDateString('en-CA', { timeZone: timezone });
+        reminders.push({
+          id: String(h._id),
+          habitName: h.title,
+          icon: h.icon,
+          scheduledAt: `${tomorrowStr}T${time}:00`,
+        });
+      }
+    }
+    
+    // Sort by scheduled time and return top 5
+    return reminders.sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt)).slice(0, 5);
   }
 
   private static async getWeeklyLogs(userId: string, timezone: string): Promise<any[]> {
