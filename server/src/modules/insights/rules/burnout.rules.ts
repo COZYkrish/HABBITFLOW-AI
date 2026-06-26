@@ -11,7 +11,7 @@ export class BurnoutRules {
 
     let severity: InsightSeverity = 'low';
     let burnoutLevel = 'low';
-    let confidence = INSIGHT_CONFIDENCE.MEDIUM;
+    let confidence: number = INSIGHT_CONFIDENCE.MEDIUM;
     let recommendation = 'Keep up the balanced routine.';
 
     if (recentMissRate >= BURN_OUT_THRESHOLDS.CRITICAL_MISS_RATE) {
