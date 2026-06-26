@@ -1,5 +1,4 @@
-import { motion } from 'framer-motion';
-import { ReportStreakDTO } from '../../../server/src/modules/reports/reports.types';
+import type { ReportStreakDTO } from '../../../../server/src/modules/reports/reports.types';
 import { Flame, ArrowUp, ArrowDown, Minus } from 'lucide-react';
 
 interface Props {

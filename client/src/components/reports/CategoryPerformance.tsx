@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ReportCategoryPerformanceDTO } from '../../../server/src/modules/reports/reports.types';
+import type { ReportCategoryPerformanceDTO } from '../../../../server/src/modules/reports/reports.types';
 
 interface Props {
   data: ReportCategoryPerformanceDTO[];

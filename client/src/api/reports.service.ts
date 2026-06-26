@@ -1,5 +1,5 @@
 import { apiClient } from './axios';
-import type { AnyReportDTO, WeeklyReportDTO, MonthlyReportDTO, YearlyReportDTO } from '../../../server/src/modules/reports/reports.types';
+import type { WeeklyReportDTO, MonthlyReportDTO, YearlyReportDTO } from '../../../server/src/modules/reports/reports.types';
 
 export const fetchWeeklyReport = async (): Promise<WeeklyReportDTO> => {
   const response = await apiClient.get('/reports/weekly');

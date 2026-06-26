@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ReportExecutiveSummaryDTO } from '../../../server/src/modules/reports/reports.types';
+import type { ReportExecutiveSummaryDTO } from '../../../../server/src/modules/reports/reports.types';
 import { Trophy, TrendingUp, Target, Star } from 'lucide-react';
 
 interface Props {

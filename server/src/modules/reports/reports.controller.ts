@@ -7,7 +7,7 @@ import { JsonExporter } from './export/json.exporter';
 export class ReportsController {
   static async getWeekly(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = (req as any).userId;
+      const userId = (req as any).user.id;
       const timezone = req.headers['x-timezone'] as string || 'UTC';
       const data = await ReportsService.getWeeklyReport(userId, timezone);
       res.status(200).json({ success: true, data });
@@ -18,7 +18,7 @@ export class ReportsController {
 
   static async getMonthly(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = (req as any).userId;
+      const userId = (req as any).user.id;
       const timezone = req.headers['x-timezone'] as string || 'UTC';
       const data = await ReportsService.getMonthlyReport(userId, timezone);
       res.status(200).json({ success: true, data });
@@ -29,7 +29,7 @@ export class ReportsController {
 
   static async getYearly(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = (req as any).userId;
+      const userId = (req as any).user.id;
       const timezone = req.headers['x-timezone'] as string || 'UTC';
       const data = await ReportsService.getYearlyReport(userId, timezone);
       res.status(200).json({ success: true, data });
@@ -41,7 +41,7 @@ export class ReportsController {
   static async exportPdf(req: Request, res: Response, next: NextFunction) {
     try {
       const { type } = req.body; // 'weekly' | 'monthly' | 'yearly'
-      const userId = (req as any).userId;
+      const userId = (req as any).user.id;
       const timezone = req.headers['x-timezone'] as string || 'UTC';
       
       let report;
