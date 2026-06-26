@@ -1,5 +1,6 @@
 import { ReminderQueue, IReminderQueue } from '../models/ReminderQueue';
 import { PreferenceEngine } from './preference.engine';
+import { NotificationType } from '../notifications.types';
 
 export class SchedulerEngine {
   /**
@@ -7,7 +8,7 @@ export class SchedulerEngine {
    */
   static async schedule(
     userId: string,
-    type: string,
+    type: NotificationType,
     title: string,
     body: string,
     scheduledAt: Date,

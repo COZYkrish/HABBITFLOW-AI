@@ -1,6 +1,5 @@
 import { Habit } from '../../habit/models/Habit';
 import { SchedulerEngine } from './scheduler.engine';
-import { InsightEngine } from '../../insights/engine/insight.engine';
 
 export class MissedEngine {
   /**

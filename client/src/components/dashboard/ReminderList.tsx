@@ -70,9 +70,3 @@ export const ReminderList = () => {
     </>
   );
 };
-          </span>
-        </motion.li>
-      ))}
-    </motion.ul>
-  );
-};
