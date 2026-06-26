@@ -1,0 +1,10 @@
+export const XP_REWARDS = {
+  HABIT_COMPLETED: 20,
+  STREAK_7_DAY: 100,
+  STREAK_30_DAY: 500,
+  ALL_HABITS_TODAY: 75,
+  WEEKLY_GOAL: 200,
+  RECOVER_STREAK: 50,
+  EARLY_BIRD: 30, // Completed before 8 AM
+  NIGHT_OWL: 30,  // Completed after 9 PM
+};

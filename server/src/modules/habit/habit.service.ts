@@ -6,11 +6,10 @@ import type {
   UpdateHabitDTO,
   LogHabitDTO,
   ListHabitsQuery,
-  HabitResponse,
-  PaginatedHabitsResponse,
-  HabitLogResponse,
-  CategoryResponse,
 } from './habit.types';
+import { CategoryResponse, HabitLogResponse, HabitResponse, PaginatedHabitsResponse } from './habit.types';
+import { gamificationService } from '../gamification/gamification.service';
+import { XP_REWARDS } from '../gamification/constants/xp.constants';
 
 /**
  * HabitService — business logic for all habit operations.
@@ -108,6 +107,29 @@ export class HabitService {
     // Recalculate and update streak if completed
     if (data.completed) {
       await HabitService.recalculateStreak(habitId, userId);
+      
+      // Dispatch Gamification Event (Background, so we don't await blocking the response if possible, 
+      // but for accuracy we can await it or just fire & forget. We will await it to ensure consistency.)
+      try {
+        const updatedHabit = await HabitRepository.findById(habitId, userId);
+        const streak = updatedHabit?.statistics?.currentStreak || 1;
+        
+        await gamificationService.dispatchXPEvent({
+          userId,
+          action: 'HABIT_COMPLETED',
+          xpAmount: XP_REWARDS.HABIT_COMPLETED,
+          metadata: { habitId, streak }
+        });
+        
+        // Let's also check for streak rewards
+        if (streak === 7) {
+          await gamificationService.dispatchXPEvent({ userId, action: 'STREAK_7_DAY', xpAmount: XP_REWARDS.STREAK_7_DAY, metadata: { habitId, streak } });
+        } else if (streak === 30) {
+          await gamificationService.dispatchXPEvent({ userId, action: 'STREAK_30_DAY', xpAmount: XP_REWARDS.STREAK_30_DAY, metadata: { habitId, streak } });
+        }
+      } catch (err) {
+        console.error('Gamification XP Event Failed:', err);
+      }
     }
 
     return HabitMapper.toLogResponse(log);

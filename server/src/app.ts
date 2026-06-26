@@ -33,6 +33,7 @@ import habitRoutes from './modules/habit/habit.routes';
 import categoryRoutes from './modules/habit/category.routes';
 import analyticsRoutes from './modules/analytics/analytics.routes';
 import insightsRoutes from './modules/insights/insights.routes';
+import gamificationRoutes from './modules/gamification/gamification.routes';
 // Feature-based module routes
 app.use(`${env.API_PREFIX}/auth`, authRoutes);
 app.use(`${env.API_PREFIX}/dashboard`, dashboardRoutes);
@@ -40,6 +41,7 @@ app.use(`${env.API_PREFIX}/habits`, habitRoutes);
 app.use(`${env.API_PREFIX}/categories`, categoryRoutes);
 app.use(`${env.API_PREFIX}/analytics`, analyticsRoutes);
 app.use(`${env.API_PREFIX}/insights`, insightsRoutes);
+app.use(`${env.API_PREFIX}/gamification`, gamificationRoutes);
 
 // Error Handling
 app.use(notFoundHandler);
