@@ -20,7 +20,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { id: 'dashboard', label: 'Dashboard', icon: '⬡', href: '/dashboard' },
   { id: 'habits', label: 'Habits', icon: '◈', href: '/dashboard/habits' },
-  { id: 'analytics', label: 'Analytics', icon: '◎', href: '/dashboard/analytics', disabled: true },
+  { id: 'analytics', label: 'Analytics', icon: '◎', href: '/dashboard/analytics' },
   { id: 'reports', label: 'Reports', icon: '▤', href: '/dashboard/reports', disabled: true },
   { id: 'achievements', label: 'Achievements', icon: '★', href: '/dashboard/achievements', disabled: true },
 ];

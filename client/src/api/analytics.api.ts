@@ -1,5 +1,5 @@
-import api from './axios';
-import { 
+import { apiClient as api } from './axios';
+import type { 
   AnalyticsFilters, 
   AnalyticsOverviewDTO, 
   HeatmapDTO, 

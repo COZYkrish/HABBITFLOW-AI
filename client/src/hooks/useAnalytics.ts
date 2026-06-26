@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { analyticsApi } from '../api/analytics.api';
-import { AnalyticsFilters } from '../types/analytics.types';
+import type { AnalyticsFilters } from '../types/analytics.types';
 
 export const useAnalyticsOverview = (filters: AnalyticsFilters = {}) => {
   return useQuery({
