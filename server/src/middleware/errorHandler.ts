@@ -15,7 +15,7 @@ export const errorHandler = (err: ApiError | ZodError, req: Request, res: Respon
   if (err instanceof ZodError) {
     statusCode = 400;
     message = 'Validation failed';
-    errors = err.errors;
+    errors = (err as any).errors;
   }
 
   if (statusCode === 500) {

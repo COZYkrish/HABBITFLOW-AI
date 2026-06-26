@@ -29,7 +29,7 @@ export class ProductivityEngine {
 
     // 3. Momentum Score (0-100)
     // Based on average streaks
-    const avgStreak = habits.reduce((acc, h) => acc + (h.currentStreak || 0), 0) / habits.length;
+    const avgStreak = habits.reduce((acc, h) => acc + (h.statistics?.currentStreak || 0), 0) / habits.length;
     let momentumScore = (avgStreak / 14) * 100; // Benchmark: 14 day streak is 100%
     momentumScore = Math.min(100, momentumScore);
 
@@ -50,7 +50,7 @@ export class ProductivityEngine {
 
     // 5. Time Efficiency (0-100)
     // Placeholder logic: 80% default + bonus if mostly intense?
-    let intenseCount = completedLogs.filter(l => (l.intensity || 0) >= 3).length;
+    let intenseCount = completedLogs.filter(l => (l.value || 0) >= 3).length;
     let timeEfficiency = 70 + (intenseCount / (completedLogs.length || 1)) * 30;
 
     return ProductivityRules.calculateScore(

@@ -37,8 +37,8 @@ export class RiskEngine {
       if (!yesterdayLog) missedDays++; // implicitly missed if no log (assuming habit was created before yesterday)
 
       // simplified current streak
-      const currentStreak = habit.currentStreak || 0;
-      if (currentStreak > 0 && missedDays > 0) {
+      const currentStreak = habit.statistics?.currentStreak || 0;
+      if ((habit.statistics?.currentStreak || 0) >= 7 && missedDays > 0) {
         const risk = RiskRules.evaluateStreakRisk(missedDays, habit.title, currentStreak);
         if (risk) highestRisks.push(risk);
       }

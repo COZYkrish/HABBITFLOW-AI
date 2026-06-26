@@ -5,7 +5,7 @@ import { InsightsService } from './insights.service';
 export class InsightsController {
   static async getOverview(req: AuthRequest, res: Response) {
     try {
-      const userId = req.user!.userId;
+      const userId = req.user!.id;
       const data = await InsightsService.getOverview(userId);
 
       res.status(200).json({

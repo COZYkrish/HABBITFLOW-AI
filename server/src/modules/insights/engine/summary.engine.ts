@@ -32,7 +32,7 @@ export class SummaryEngine {
 
     let longestStreak = 0;
     habits.forEach(h => {
-      if ((h.longestStreak || 0) > longestStreak) longestStreak = h.longestStreak || 0;
+      if ((h.statistics?.longestStreak || 0) > longestStreak) longestStreak = h.statistics?.longestStreak || 0;
     });
 
     // Best day

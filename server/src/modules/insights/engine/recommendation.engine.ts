@@ -31,13 +31,13 @@ export class RecommendationEngine {
       let minRate = Infinity;
       const expected = 30; // approx days
 
-      habits.forEach(h => {
+      for (const h of habits) {
         const rate = (habitCompletions.get(h._id.toString()) || 0) / expected;
         if (rate < minRate && rate > 0) { // must have some logs to be "weak" but active
           minRate = rate;
           weakestHabit = h;
         }
-      });
+      }
 
       if (weakestHabit && minRate < 0.6) {
         const rule = RecommendationRules.generateTimeShiftRecommendation(

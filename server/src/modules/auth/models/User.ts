@@ -17,6 +17,7 @@ export interface IUser extends Document {
     totalHabits: number;
     longestStreak: number;
     currentStreak: number;
+    lastCompletedAt?: Date;
   };
   lastLogin?: Date;
   role: 'user' | 'admin';
@@ -43,6 +44,7 @@ const UserSchema: Schema = new Schema(
       totalHabits: { type: Number, default: 0 },
       longestStreak: { type: Number, default: 0 },
       currentStreak: { type: Number, default: 0 },
+      lastCompletedAt: { type: Date },
     },
     lastLogin: { type: Date },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },

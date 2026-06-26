@@ -22,8 +22,8 @@ export class ScheduleEngine {
 
     completedLogs.forEach(log => {
       // Best time of day requires completedAt
-      if (log.completedAt) {
-        const date = new Date(log.completedAt);
+      if (log.completionTime) {
+        const date = new Date(log.completionTime);
         const hour = date.getHours(); // Local server time, can be improved with user tz
         if (hour >= 5 && hour < 12) timeOfDayStats.Morning++;
         else if (hour >= 12 && hour < 17) timeOfDayStats.Afternoon++;
