@@ -23,7 +23,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'analytics', label: 'Analytics', icon: '◎', href: '/dashboard/analytics' },
   { id: 'insights', label: 'Insights', icon: '💡', href: '/dashboard/insights' },
   { id: 'reports', label: 'Reports', icon: '▤', href: '/dashboard/reports', disabled: true },
-  { id: 'achievements', label: 'Achievements', icon: '★', href: '/dashboard/achievements', disabled: true },
+  { id: 'achievements', label: 'Achievements', icon: '★', href: '/dashboard/achievements' },
 ];
 
 const BOTTOM_ITEMS: NavItem[] = [
