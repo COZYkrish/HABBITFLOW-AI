@@ -32,7 +32,8 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
       initial="rest"
       whileHover="hover"
       className="glass-card rounded-2xl p-5 flex flex-col gap-4 cursor-default
-                 transition-colors hover:bg-foreground/[0.02] relative group"
+                 transition-colors hover:bg-foreground/[0.02] relative group
+                 hover:z-50 focus-within:z-50"
       aria-label={habit.title}
     >
       {/* Header row */}
