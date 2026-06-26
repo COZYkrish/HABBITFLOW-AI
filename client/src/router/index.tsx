@@ -10,13 +10,19 @@ const AuthLayout = React.lazy(() => import('../pages/Auth'));
 const Dashboard = React.lazy(() => import('../pages/Dashboard'));
 const NotFound = React.lazy(() => import('../pages/NotFound'));
 const ErrorPage = React.lazy(() => import('../pages/ErrorPage'));
-const PlaceholderPage = React.lazy(() => import('../pages/PlaceholderPage'));
 const HabitsPage = React.lazy(() => import('../pages/dashboard/HabitsPage'));
 const AnalyticsPage = React.lazy(() => import('../pages/dashboard/AnalyticsPage'));
 const InsightsPage = React.lazy(() => import('../pages/dashboard/InsightsPage'));
 const ReportsPage = React.lazy(() => import('../pages/dashboard/reports/ReportsPage'));
-const NotificationsPage = React.lazy(() => import('../pages/dashboard/NotificationsPage'));
 const AchievementsPage = React.lazy(() => import('../pages/gamification/AchievementsPage'));
+const ProfilePage = React.lazy(() => import('../pages/dashboard/profile/ProfilePage'));
+const SettingsLayout = React.lazy(() => import('../pages/dashboard/profile/SettingsLayout'));
+const SettingsPage = React.lazy(() => import('../pages/dashboard/profile/SettingsPage'));
+const AppearanceSettings = React.lazy(() => import('../pages/dashboard/profile/AppearanceSettings'));
+const NotificationSettings = React.lazy(() => import('../pages/dashboard/profile/NotificationSettings'));
+const LanguageSettings = React.lazy(() => import('../pages/dashboard/profile/LanguageSettings'));
+const SecurityPage = React.lazy(() => import('../pages/dashboard/profile/SecurityPage'));
+const DangerZone = React.lazy(() => import('../pages/dashboard/profile/DangerZone'));
 
 // Auth Pages
 const Login = React.lazy(() => import('../pages/auth/Login'));
@@ -80,10 +86,20 @@ export const router = createBrowserRouter([
           { path: 'insights', element: <Suspense fallback={WidgetFallback}><InsightsPage /></Suspense> },
           { path: 'gamification', element: <Suspense fallback={WidgetFallback}><AchievementsPage /></Suspense> },
           { path: 'reports', element: <Suspense fallback={WidgetFallback}><ReportsPage /></Suspense> },
-          { path: 'notifications', element: <Suspense fallback={WidgetFallback}><NotificationsPage /></Suspense> },
           { path: 'achievements', element: <Suspense fallback={WidgetFallback}><AchievementsPage /></Suspense> },
-          { path: 'profile', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
-          { path: 'settings', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
+          { path: 'profile', element: <Suspense fallback={WidgetFallback}><ProfilePage /></Suspense> },
+          { 
+            path: 'settings', 
+            element: <Suspense fallback={WidgetFallback}><SettingsLayout /></Suspense>,
+            children: [
+              { index: true, element: <Suspense fallback={WidgetFallback}><SettingsPage /></Suspense> },
+              { path: 'appearance', element: <Suspense fallback={WidgetFallback}><AppearanceSettings /></Suspense> },
+              { path: 'notifications', element: <Suspense fallback={WidgetFallback}><NotificationSettings /></Suspense> },
+              { path: 'language', element: <Suspense fallback={WidgetFallback}><LanguageSettings /></Suspense> },
+              { path: 'security', element: <Suspense fallback={WidgetFallback}><SecurityPage /></Suspense> },
+              { path: 'danger', element: <Suspense fallback={WidgetFallback}><DangerZone /></Suspense> },
+            ]
+          },
         ],
       },
       {

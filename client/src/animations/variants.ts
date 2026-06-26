@@ -15,6 +15,13 @@ export const fadeVariants: Variants = {
   visible: { opacity: 1, transition: { duration: 0.8, ease: appleEase } },
 };
 
+/* ── Page Transition ─────────────────────────────────────── */
+export const pageTransitionVariants: Variants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+  exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
+};
+
 /* ── Fade + slide up ─────────────────────────────────────── */
 export const fadeUpVariants: Variants = {
   hidden: { opacity: 0, y: 40 },

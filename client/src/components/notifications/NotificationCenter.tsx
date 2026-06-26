@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, X, CheckCircle2 } from 'lucide-react';
+import { Bell, X } from 'lucide-react';
 import { useNotificationHistory } from '../../hooks/useNotifications';
 import { formatDistanceToNow } from 'date-fns';
 

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Clock, Bell } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 interface Props {

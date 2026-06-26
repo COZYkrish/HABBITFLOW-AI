@@ -12,8 +12,36 @@ export class ReminderEngine {
     const prefs = await PreferenceEngine.getPreferences(userId);
     if (!prefs.enabled) return;
 
-    // In a full implementation, we'd clear existing pending queues for habits and recreate them.
-    // For this Phase 10 demo, we'll assume the scheduler dynamically creates these or we just enqueue them.
+    const { ReminderQueue } = await import('../models/ReminderQueue');
+    // Clear existing pending habit reminders for this user
+    await ReminderQueue.deleteMany({ userId, type: 'habit_reminder', status: 'pending' });
+
+    const { Habit } = await import('../../habit/models/Habit');
+    const habits = await Habit.find({ userId, status: 'active', isArchived: false, isPaused: false }).lean();
+
+    const now = new Date();
+
+    for (const habit of habits) {
+      if (habit.reminder?.enabled && habit.reminder?.time) {
+        const [h, m] = habit.reminder.time.split(':').map(Number);
+        const scheduledAt = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0);
+
+        if (scheduledAt.getTime() <= now.getTime()) {
+          // If the time has already passed today, schedule for tomorrow
+          scheduledAt.setDate(scheduledAt.getDate() + 1);
+        }
+
+        await SchedulerEngine.schedule(
+          userId,
+          'habit_reminder',
+          habit.title,
+          `Time to complete your habit: ${habit.title}`,
+          scheduledAt,
+          { habitId: habit._id.toString() },
+          habit.icon || '🔔'
+        );
+      }
+    }
   }
 
   /**

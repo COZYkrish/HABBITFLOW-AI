@@ -4,6 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 import { env } from './config/env';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
@@ -16,6 +17,9 @@ app.use(morgan('dev'));
 app.use(compression());
 app.use(express.json());
 app.use(cookieParser());
+
+// Static files
+app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 
 // Health Check Endpoint (Standard API Response Format)
 app.get('/health', (req, res) => {
@@ -36,6 +40,7 @@ import insightsRoutes from './modules/insights/insights.routes';
 import gamificationRoutes from './modules/gamification/gamification.routes';
 import { reportsRouter } from './modules/reports/reports.routes';
 import notificationsRoutes from './modules/notifications/notifications.routes';
+import profileRoutes from './modules/profile/profile.routes';
 
 // Feature-based module routes
 app.use(`${env.API_PREFIX}/auth`, authRoutes);
@@ -47,6 +52,7 @@ app.use(`${env.API_PREFIX}/insights`, insightsRoutes);
 app.use(`${env.API_PREFIX}/gamification`, gamificationRoutes);
 app.use(`${env.API_PREFIX}/reports`, reportsRouter);
 app.use(`${env.API_PREFIX}/notifications`, notificationsRoutes);
+app.use(`${env.API_PREFIX}/profile`, profileRoutes);
 
 // Error Handling
 app.use(notFoundHandler);

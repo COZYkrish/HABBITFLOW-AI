@@ -1,15 +1,14 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { pageTransitionVariants } from '../../animations/variants';
-import { useNotificationPreferences, useWebNotifications } from '../../hooks/useNotifications';
+import { useNotificationPreferences } from '../../hooks/useNotifications';
 import { useWebNotifications as useBrowserNotifs } from '../../hooks/useWebNotifications';
 import { NotificationHistory } from '../../components/notifications/NotificationHistory';
-import { Bell, Clock, Sun, Moon, Volume2, ShieldAlert } from 'lucide-react';
+import { Bell, Clock, Sun, Moon, Volume2 } from 'lucide-react';
 import { PermissionBanner } from '../../components/notifications/PermissionBanner';
 
 const NotificationsPage = () => {
   const { preferences, updatePreferences, isLoading } = useNotificationPreferences();
-  const { permission, requestPermission, testNotification } = useBrowserNotifs();
+  const { testNotification } = useBrowserNotifs();
 
   if (isLoading || !preferences) {
     return <div className="p-8 text-center text-muted-foreground">Loading preferences...</div>;

@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { BellRing, X } from 'lucide-react';
+import { BellRing } from 'lucide-react';
 import { useWebNotifications } from '../../hooks/useWebNotifications';
 
 export const PermissionBanner = () => {

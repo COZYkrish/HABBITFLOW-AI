@@ -54,7 +54,11 @@ export const DashboardLayout = () => {
 
       {/* Main area */}
       <div className="flex-1 flex flex-col min-w-0">
-        <TopNavbar onMenuToggle={toggleSidebar} isSidebarOpen={sidebarOpen} />
+        <TopNavbar 
+          user={user || { name: 'Guest' }} 
+          onMenuToggle={toggleSidebar} 
+          isSidebarOpen={sidebarOpen} 
+        />
 
         <div className="flex-1 flex overflow-hidden">
           {/* Scrollable content */}
@@ -144,7 +148,7 @@ export const DashboardLayout = () => {
                   </div>
                   <div className="glass-card rounded-2xl p-6">
                     <SectionTitle title="Upcoming Reminders" />
-                    <ReminderList reminders={data?.upcomingReminders ?? []} />
+                    <ReminderList />
                   </div>
                 </div>
               </motion.div>

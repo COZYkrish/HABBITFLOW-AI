@@ -21,6 +21,7 @@ export class HabitService {
   static async createHabit(userId: string, data: CreateHabitDTO): Promise<HabitResponse> {
     const habit = await HabitRepository.create(userId, data);
     await HabitService.incrementUserHabitCount(userId, 1);
+    await HabitService.triggerReminderSync(userId);
     return HabitMapper.toResponse(habit);
   }
 
@@ -41,6 +42,7 @@ export class HabitService {
   static async updateHabit(userId: string, habitId: string, data: UpdateHabitDTO): Promise<HabitResponse> {
     const habit = await HabitRepository.update(habitId, userId, data);
     if (!habit) throw Object.assign(new Error('Habit not found'), { statusCode: 404 });
+    await HabitService.triggerReminderSync(userId);
     return HabitMapper.toResponse(habit);
   }
 
@@ -48,6 +50,7 @@ export class HabitService {
     const habit = await HabitRepository.softDelete(habitId, userId);
     if (!habit) throw Object.assign(new Error('Habit not found'), { statusCode: 404 });
     await HabitService.incrementUserHabitCount(userId, -1);
+    await HabitService.triggerReminderSync(userId);
   }
 
   // ── Status transitions ────────────────────────────────────────────────────
@@ -61,6 +64,7 @@ export class HabitService {
       isArchived,
       status: isArchived ? 'archived' : 'active',
     });
+    await HabitService.triggerReminderSync(userId);
     return HabitMapper.toResponse(habit!);
   }
 
@@ -73,6 +77,7 @@ export class HabitService {
       isPaused: true,
       status: 'paused',
     });
+    await HabitService.triggerReminderSync(userId);
     return HabitMapper.toResponse(habit!);
   }
 
@@ -85,6 +90,7 @@ export class HabitService {
       isPaused: false,
       status: 'active',
     });
+    await HabitService.triggerReminderSync(userId);
     return HabitMapper.toResponse(habit!);
   }
 
@@ -208,5 +214,14 @@ export class HabitService {
       $max: { 'statistics.longestStreak': longestStreak },
       $set: { 'statistics.currentStreak': streak },
     });
+  }
+
+  private static async triggerReminderSync(userId: string): Promise<void> {
+    try {
+      const { ReminderEngine } = await import('../notifications/engine/reminder.engine');
+      await ReminderEngine.syncHabitReminders(userId);
+    } catch (err) {
+      console.error('Failed to sync habit reminders:', err);
+    }
   }
 }
