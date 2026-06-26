@@ -2,7 +2,7 @@ import { IHabit } from '../../habit/models/Habit';
 import { IHabitLog } from '../../habit/models/HabitLog';
 import { RiskRules } from '../rules/risk.rules';
 import { RiskAssessmentDTO } from '../dto/insights.dto';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID as uuidv4 } from 'crypto';
 
 export class RiskEngine {
   static analyze(habits: IHabit[], recentLogs: IHabitLog[]): RiskAssessmentDTO | null {

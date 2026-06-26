@@ -56,7 +56,7 @@ export interface MonthlySummaryDTO {
 }
 
 export interface ScheduleInsightDTO extends InsightDTO {
-  bestTimeOfDay: 'Morning' | 'Afternoon' | 'Evening' | 'Night';
+  bestTimeOfDay: 'Morning' | 'Afternoon' | 'Evening' | 'Night' | 'Unknown';
   mostProductiveWeekday: string;
   leastProductiveWeekday: string;
 }

@@ -1,7 +1,7 @@
 import { IHabitLog } from '../../habit/models/HabitLog';
 import { ScheduleRules } from '../rules/schedule.rules';
 import { ScheduleInsightDTO } from '../dto/insights.dto';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID as uuidv4 } from 'crypto';
 
 export class ScheduleEngine {
   static analyze(logs: IHabitLog[]): ScheduleInsightDTO | null {
@@ -47,7 +47,7 @@ export class ScheduleEngine {
     // Parse best day
     let mostProductiveWeekday = 'Unknown';
     let leastProductiveWeekday = 'Unknown';
-    let bestTimeOfDay: any = 'Morning';
+    let bestTimeOfDay: any = 'Unknown';
 
     if (dayRule) {
       mostProductiveWeekday = dayRule.evidence[0].value as string;

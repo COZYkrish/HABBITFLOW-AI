@@ -1,8 +1,9 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import type { AuthRequest } from '../../middleware/auth.middleware';
 import { InsightsService } from './insights.service';
 
 export class InsightsController {
-  static async getOverview(req: Request, res: Response) {
+  static async getOverview(req: AuthRequest, res: Response) {
     try {
       const userId = req.user!.userId;
       const data = await InsightsService.getOverview(userId);

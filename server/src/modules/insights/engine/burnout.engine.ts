@@ -2,7 +2,7 @@ import { IHabit } from '../../habit/models/Habit';
 import { IHabitLog } from '../../habit/models/HabitLog';
 import { BurnoutRules } from '../rules/burnout.rules';
 import { BurnoutDTO } from '../dto/insights.dto';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID as uuidv4 } from 'crypto';
 
 export class BurnoutEngine {
   static analyze(habits: IHabit[], recentLogs: IHabitLog[]): BurnoutDTO | null {
