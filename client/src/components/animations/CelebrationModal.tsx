@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect } from 'react';
 import { CelebrationRenderer } from './CelebrationRenderer';
-import { CelebrationEvent } from '../../../server/src/modules/gamification/engine/celebration.engine';
+import type { CelebrationEvent } from '../../types/gamification.types';
 import { Trophy, Star, Target, TrendingUp } from 'lucide-react';
 
 interface CelebrationModalProps {

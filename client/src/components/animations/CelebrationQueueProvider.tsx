@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
-import { CelebrationEvent } from '../../../server/src/modules/gamification/engine/celebration.engine';
+import type { CelebrationEvent } from '../../types/gamification.types';
 import { CelebrationModal } from './CelebrationModal';
 
 interface CelebrationQueueContextType {
