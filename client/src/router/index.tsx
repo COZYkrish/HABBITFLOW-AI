@@ -13,6 +13,7 @@ const ErrorPage = React.lazy(() => import('../pages/ErrorPage'));
 const PlaceholderPage = React.lazy(() => import('../pages/PlaceholderPage'));
 const HabitsPage = React.lazy(() => import('../pages/dashboard/HabitsPage'));
 const AnalyticsPage = React.lazy(() => import('../pages/dashboard/AnalyticsPage'));
+const InsightsPage = React.lazy(() => import('../pages/dashboard/InsightsPage'));
 
 // Auth Pages
 const Login = React.lazy(() => import('../pages/auth/Login'));
@@ -73,6 +74,7 @@ export const router = createBrowserRouter([
           // Sub-routes — render inside DashboardLayout's <Outlet />
           { path: 'habits', element: <Suspense fallback={WidgetFallback}><HabitsPage /></Suspense> },
           { path: 'analytics', element: <Suspense fallback={WidgetFallback}><AnalyticsPage /></Suspense> },
+          { path: 'insights', element: <Suspense fallback={WidgetFallback}><InsightsPage /></Suspense> },
           { path: 'reports', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
           { path: 'achievements', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
           { path: 'profile', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
