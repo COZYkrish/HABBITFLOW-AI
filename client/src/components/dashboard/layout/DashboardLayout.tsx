@@ -21,6 +21,7 @@ import { motion } from 'framer-motion';
 import { HabitFormModal } from '../../habits/HabitFormModal';
 import { DeleteDialog } from '../../habits/DeleteDialog';
 import { ArchiveDialog } from '../../habits/ArchiveDialog';
+import { InsightsPreviewWidget } from '../../insights/InsightsPreviewWidget';
 
 const ErrorCard = ({ message }: { message: string }) => (
   <div className="flex items-center justify-center min-h-[400px]">
@@ -115,10 +116,17 @@ export const DashboardLayout = () => {
                   </div>
                 </div>
 
-                {/* Weekly Summary + Quote */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <WeeklySummaryCard summary={data?.weeklySummary ?? { completionRate: 0, habitsCompleted: 0, totalHabits: 0, streak: 0, dailyRates: [0,0,0,0,0,0,0] }} />
-                  <QuoteCard />
+                {/* Insights Preview + Weekly Summary + Quote */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  <div className="md:col-span-1">
+                    <InsightsPreviewWidget />
+                  </div>
+                  <div className="md:col-span-1">
+                    <WeeklySummaryCard summary={data?.weeklySummary ?? { completionRate: 0, habitsCompleted: 0, totalHabits: 0, streak: 0, dailyRates: [0,0,0,0,0,0,0] }} />
+                  </div>
+                  <div className="md:col-span-1">
+                    <QuoteCard />
+                  </div>
                 </div>
 
                 {/* Activity + Reminders */}
