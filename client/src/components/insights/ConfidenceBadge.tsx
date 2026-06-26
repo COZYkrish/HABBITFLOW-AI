@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 
 interface ConfidenceBadgeProps {
   confidence: number; // 0-100

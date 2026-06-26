@@ -90,7 +90,7 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
 
       {/* Paused overlay */}
       {habit.isPaused && (
-        <div className="absolute inset-0 rounded-2xl bg-background/40 backdrop-blur-[1px] flex items-center justify-center">
+        <div className="absolute inset-0 rounded-2xl bg-background/40 backdrop-blur-[1px] flex items-center justify-center pointer-events-none">
           <span className="text-xs text-muted-foreground uppercase tracking-widest">Paused</span>
         </div>
       )}

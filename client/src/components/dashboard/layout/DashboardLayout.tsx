@@ -72,7 +72,7 @@ export const DashboardLayout = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4 }}
-                className="p-5 md:p-7 space-y-6 max-w-[1200px] mx-auto"
+                className="p-5 md:p-7 space-y-6 max-w-none w-full"
               >
                 {/* Welcome card */}
                 <WelcomeCard name={data?.user?.name ?? user?.name ?? 'there'} />
@@ -110,28 +110,28 @@ export const DashboardLayout = () => {
                   <ProductivityGauge score={data?.productivityScore ?? 0} />
                 </div>
 
-                {/* Today's habits + Quick Actions */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                  <div className="lg:col-span-2 glass-card rounded-2xl p-6">
+                {/* Dashboard Main Grid */}
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
+                  {/* Left Column: Today's Habits */}
+                  <div className="glass-card rounded-2xl p-6 h-full flex flex-col">
                     <SectionTitle title="Today's Habits" subtitle={`${data?.todayHabits?.length ?? 0} scheduled`} />
-                    <TodayHabits habits={data?.todayHabits ?? []} />
+                    <div className="flex-1 min-h-0">
+                      <TodayHabits habits={data?.todayHabits ?? []} />
+                    </div>
                   </div>
 
-                  <div className="glass-card rounded-2xl p-6">
+                  {/* Middle Column: Quick Actions */}
+                  <div className="glass-card rounded-2xl p-6 h-full flex flex-col">
                     <SectionTitle title="Quick Actions" />
-                    <QuickActionGrid />
+                    <div className="flex-1 min-h-0 h-full">
+                      <QuickActionGrid />
+                    </div>
                   </div>
-                </div>
 
-                {/* Insights Preview + Weekly Summary + Quote */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  <div className="md:col-span-1">
+                  {/* Right Column: Widgets */}
+                  <div className="flex flex-col gap-5">
                     <InsightsPreviewWidget />
-                  </div>
-                  <div className="md:col-span-1">
                     <WeeklySummaryCard summary={data?.weeklySummary ?? { completionRate: 0, habitsCompleted: 0, totalHabits: 0, streak: 0, dailyRates: [0,0,0,0,0,0,0] }} />
-                  </div>
-                  <div className="md:col-span-1">
                     <QuoteCard />
                   </div>
                 </div>

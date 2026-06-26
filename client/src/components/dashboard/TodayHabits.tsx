@@ -54,7 +54,7 @@ export const TodayHabits = ({ habits }: TodayHabitsProps) => {
       variants={staggerContainerVariants}
       initial="hidden"
       animate="visible"
-      className="space-y-2 max-h-80 overflow-y-auto no-scrollbar"
+      className="space-y-2 h-full overflow-y-auto no-scrollbar"
       role="list"
       aria-label="Today's habits"
     >
@@ -63,7 +63,7 @@ export const TodayHabits = ({ habits }: TodayHabitsProps) => {
           key={habit.id}
           variants={staggerItemVariants}
           whileHover={{ x: 4, transition: { duration: 0.2 } }}
-          className="glass-card rounded-xl p-4 flex items-center gap-4 cursor-default"
+          className="glass-card rounded-xl p-3 flex items-center gap-2 md:gap-3 cursor-default"
         >
           {/* Completion checkbox — wired to API */}
           <button
@@ -82,7 +82,7 @@ export const TodayHabits = ({ habits }: TodayHabitsProps) => {
           </button>
 
           {/* Icon */}
-          <span className="text-xl flex-shrink-0" aria-hidden="true">{habit.icon}</span>
+          <span className="text-lg md:text-xl flex-shrink-0" aria-hidden="true">{habit.icon}</span>
 
           {/* Info */}
           <div className="flex-1 min-w-0">
@@ -91,14 +91,14 @@ export const TodayHabits = ({ habits }: TodayHabitsProps) => {
             }`}>
               {habit.name}
             </p>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-[11px] md:text-xs text-muted-foreground mt-0.5 truncate">
               {habit.category} · {habit.estimatedMinutes}m
             </p>
           </div>
 
           {/* Priority badge */}
           <span
-            className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${
+            className={`px-1.5 py-0.5 md:px-2 md:py-1 rounded-md text-[9px] md:text-[10px] font-bold uppercase tracking-wider shrink-0 ${
               PRIORITY_STYLES[habit.priority]
             }`}
           >

@@ -44,21 +44,23 @@ export const WeeklySummaryCard = ({ summary }: WeeklySummaryCardProps) => {
       {/* Mini bar chart */}
       <div className="flex items-end gap-1.5 h-16" aria-label="Daily completion rates this week">
         {summary.dailyRates.map((rate, index) => (
-          <div key={DAYS[index]} className="flex flex-col items-center gap-1.5 flex-1">
-            <motion.div
-              initial={{ scaleY: 0 }}
-              animate={{ scaleY: 1 }}
-              transition={{ delay: 0.1 + index * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className={`w-full rounded-sm origin-bottom ${
-                index === todayIndex ? 'bg-foreground' : 'bg-foreground/20'
-              }`}
-              style={{ height: `${Math.max(rate, 4)}%` }}
-              role="img"
-              aria-label={`${DAYS[index]}: ${rate}%`}
-            />
+          <div key={DAYS[index]} className="flex flex-col items-center justify-end gap-1.5 flex-1 h-full">
+            <div className="w-full flex-1 flex flex-col justify-end">
+              <motion.div
+                initial={{ scaleY: 0 }}
+                animate={{ scaleY: 1 }}
+                transition={{ delay: 0.1 + index * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className={`w-full rounded-sm origin-bottom ${
+                  index === todayIndex ? 'bg-foreground' : 'bg-foreground/20'
+                }`}
+                style={{ height: `${Math.max(rate, 4)}%` }}
+                role="img"
+                aria-label={`${DAYS[index]}: ${rate}%`}
+              />
+            </div>
             <span
               className={`text-[9px] uppercase tracking-wider ${
-                index === todayIndex ? 'text-foreground' : 'text-muted-foreground/50'
+                index === todayIndex ? 'text-foreground font-bold' : 'text-muted-foreground'
               }`}
             >
               {DAYS[index]}

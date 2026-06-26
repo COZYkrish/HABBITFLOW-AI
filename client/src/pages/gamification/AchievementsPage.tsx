@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { pageTransition, staggerContainerVariants, staggerItemVariants } from '../../animations/variants';
+import { fadeUpVariants, staggerContainerVariants, staggerItemVariants } from '../../animations/variants';
 import { AchievementCard } from '../../components/gamification/AchievementCard';
 import { LevelCard } from '../../components/gamification/LevelCard';
-import { Trophy, Target, Star, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 // import { api } from '../../api/client'; // Assuming an api client exists
 
 // Dummy data for initial UI build
@@ -17,7 +17,7 @@ const DUMMY_ACHIEVEMENTS = [
 
 export default function AchievementsPage() {
   const [filter, setFilter] = useState<'all' | 'unlocked' | 'locked'>('all');
-  const [loading, setLoading] = useState(false); // will be true when fetching real data
+  const [loading] = useState(false); // will be true when fetching real data
 
   const filtered = DUMMY_ACHIEVEMENTS.filter((a) => {
     if (filter === 'unlocked') return a.unlocked;
@@ -27,10 +27,10 @@ export default function AchievementsPage() {
 
   return (
     <motion.div
-      variants={pageTransition}
-      initial="initial"
-      animate="animate"
-      exit="exit"
+      variants={fadeUpVariants}
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
       className="max-w-6xl mx-auto space-y-10"
     >
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">

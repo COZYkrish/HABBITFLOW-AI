@@ -35,14 +35,14 @@ export const CategorySection = () => {
               dataKey="completionPercentage"
               nameKey="category"
             >
-              {data.categories.map((entry, index) => (
+              {data.categories.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
             <Tooltip 
               contentStyle={{ backgroundColor: '#18181b', border: '1px solid #27272a', borderRadius: '8px' }}
               itemStyle={{ color: '#e4e4e7' }}
-              formatter={(value: number) => [`${value}%`, 'Completions']}
+              formatter={(value: any) => [`${value}%`, 'Completions']}
             />
             <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '12px', color: '#a1a1aa' }}/>
           </PieChart>
