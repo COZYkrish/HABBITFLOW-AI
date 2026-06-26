@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useInsightsOverview } from '../../hooks/useInsights';
 import { InsightCard } from '../../components/insights/InsightCard';
-import { staggerContainerVariants, staggerItemVariants, pageTransition } from '../../animations/variants';
+import { staggerContainerVariants, staggerItemVariants, fadeUpVariants } from '../../animations/variants';
 import { Loader2, Zap, AlertTriangle, TrendingUp, CalendarDays } from 'lucide-react';
 
 export default function InsightsPage() {
@@ -33,10 +33,10 @@ export default function InsightsPage() {
 
   return (
     <motion.div
-      variants={pageTransition}
-      initial="initial"
-      animate="animate"
-      exit="exit"
+      variants={fadeUpVariants}
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
       className="max-w-5xl mx-auto space-y-8"
     >
       <header>

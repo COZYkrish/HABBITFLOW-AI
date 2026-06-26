@@ -1,4 +1,4 @@
-import { InsightDTO } from '../../types/insights.types';
+import type { InsightDTO } from '../../types/insights.types';
 import { ConfidenceBadge } from './ConfidenceBadge';
 import { EvidencePanel } from './EvidencePanel';
 

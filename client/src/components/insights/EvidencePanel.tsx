@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { InsightEvidence } from '../../types/insights.types';
+import type { InsightEvidence } from '../../types/insights.types';
 import { useState } from 'react';
 
 export const EvidencePanel = ({ evidence }: { evidence: InsightEvidence[] }) => {
