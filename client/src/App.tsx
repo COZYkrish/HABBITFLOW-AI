@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import { ThemeProvider } from './theme/ThemeProvider';
 import { useEffect } from 'react';
 import { AuthService } from './api/auth.service';
+import { CelebrationQueueProvider } from './components/animations/CelebrationQueueProvider';
 
 function App() {
   useEffect(() => {
@@ -13,12 +14,14 @@ function App() {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen flex flex-col">
-        <main className="flex-1">
-          <Outlet />
-        </main>
-      </div>
-      <Toaster position="top-right" />
+      <CelebrationQueueProvider>
+        <div className="min-h-screen flex flex-col">
+          <main className="flex-1">
+            <Outlet />
+          </main>
+        </div>
+        <Toaster position="top-right" />
+      </CelebrationQueueProvider>
     </ThemeProvider>
   );
 }

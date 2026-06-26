@@ -22,6 +22,7 @@ import { HabitFormModal } from '../../habits/HabitFormModal';
 import { DeleteDialog } from '../../habits/DeleteDialog';
 import { ArchiveDialog } from '../../habits/ArchiveDialog';
 import { InsightsPreviewWidget } from '../../insights/InsightsPreviewWidget';
+import { LevelCard } from '../../gamification/LevelCard';
 
 const ErrorCard = ({ message }: { message: string }) => (
   <div className="flex items-center justify-center min-h-[400px]">
@@ -75,6 +76,12 @@ export const DashboardLayout = () => {
               >
                 {/* Welcome card */}
                 <WelcomeCard name={data?.user?.name ?? user?.name ?? 'there'} />
+
+                {/* Gamification Row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <LevelCard currentLevel={3} currentXP={850} xpRequired={1400} />
+                  {/* Additional Gamification Widget can go here later, like a featured challenge */}
+                </div>
 
                 {/* Stats row */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

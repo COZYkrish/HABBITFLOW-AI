@@ -14,6 +14,7 @@ const PlaceholderPage = React.lazy(() => import('../pages/PlaceholderPage'));
 const HabitsPage = React.lazy(() => import('../pages/dashboard/HabitsPage'));
 const AnalyticsPage = React.lazy(() => import('../pages/dashboard/AnalyticsPage'));
 const InsightsPage = React.lazy(() => import('../pages/dashboard/InsightsPage'));
+const AchievementsPage = React.lazy(() => import('../pages/gamification/AchievementsPage'));
 
 // Auth Pages
 const Login = React.lazy(() => import('../pages/auth/Login'));
@@ -75,8 +76,9 @@ export const router = createBrowserRouter([
           { path: 'habits', element: <Suspense fallback={WidgetFallback}><HabitsPage /></Suspense> },
           { path: 'analytics', element: <Suspense fallback={WidgetFallback}><AnalyticsPage /></Suspense> },
           { path: 'insights', element: <Suspense fallback={WidgetFallback}><InsightsPage /></Suspense> },
+          { path: 'gamification', element: <Suspense fallback={WidgetFallback}><AchievementsPage /></Suspense> },
           { path: 'reports', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
-          { path: 'achievements', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
+          { path: 'achievements', element: <Suspense fallback={WidgetFallback}><AchievementsPage /></Suspense> },
           { path: 'profile', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
           { path: 'settings', element: <Suspense fallback={WidgetFallback}><PlaceholderPage /></Suspense> },
         ],
