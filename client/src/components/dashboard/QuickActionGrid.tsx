@@ -41,7 +41,7 @@ export const QuickActionGrid = () => {
       label: 'Analytics',
       icon: '◎',
       description: 'View your progress charts',
-      href: '/dashboard/analytics',
+      href: '/dashboard/analytics', 
       disabled: true,
     },
     {
