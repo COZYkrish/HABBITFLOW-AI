@@ -3,7 +3,7 @@ import { useEffect, useState, useRef, useId } from 'react';
 import './GlassSurface.css';
 
 const GlassSurface = ({
-  children,
+  children = null,
   width = '100%',
   height = '100%',
   borderRadius = 20,

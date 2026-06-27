@@ -202,7 +202,7 @@ export default function Strands({
   dispersion = 1,
   glassSize = 1,
   className = '',
-  style
+  style = {}
 }) {
   const propsRef = useRef({});
   propsRef.current = {
