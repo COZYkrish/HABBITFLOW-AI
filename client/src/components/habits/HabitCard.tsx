@@ -33,12 +33,12 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
       whileHover="hover"
       className="glass-card rounded-2xl p-5 flex flex-col gap-4 cursor-default
                  transition-colors hover:bg-foreground/[0.02] relative group
-                 hover:z-50 focus-within:z-50 overflow-hidden"
+                 hover:z-50 focus-within:z-50"
       aria-label={habit.title}
     >
       {/* Color accent bar */}
       <div 
-        className="absolute left-0 top-0 bottom-0 w-1.5 opacity-80" 
+        className="absolute left-0 top-0 bottom-0 w-1.5 opacity-80 rounded-l-2xl" 
         style={{ backgroundColor: habit.color || 'var(--foreground)' }} 
       />
 

@@ -63,8 +63,14 @@ export const TodayHabits = ({ habits }: TodayHabitsProps) => {
           key={habit.id}
           variants={staggerItemVariants}
           whileHover={{ x: 4, transition: { duration: 0.2 } }}
-          className="glass-card rounded-xl p-3 flex items-center gap-2 md:gap-3 cursor-default"
+          className="glass-card rounded-xl p-3 flex items-center gap-2 md:gap-3 cursor-default relative"
         >
+          {/* Color accent bar */}
+          <div 
+            className="absolute left-0 top-0 bottom-0 w-1 opacity-80 rounded-l-xl" 
+            style={{ backgroundColor: habit.color || 'var(--foreground)' }} 
+          />
+
           {/* Completion checkbox — wired to API */}
           <button
             type="button"
@@ -74,7 +80,7 @@ export const TodayHabits = ({ habits }: TodayHabitsProps) => {
             onClick={() => handleToggle(habit)}
             className="w-5 h-5 rounded-full border border-border flex-shrink-0 flex items-center justify-center
                        hover:border-foreground/50 transition-colors focus-visible:outline-none focus-visible:ring-2
-                       disabled:opacity-40"
+                       disabled:opacity-40 ml-1.5"
           >
             {habit.status === 'completed' && (
               <div className="w-2.5 h-2.5 rounded-full bg-foreground" />
