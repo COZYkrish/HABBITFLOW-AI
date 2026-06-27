@@ -4,6 +4,8 @@ import { fadeUpVariants, staggerContainerVariants, staggerItemVariants } from '.
 import { AchievementCard } from '../../components/gamification/AchievementCard';
 import { LevelCard } from '../../components/gamification/LevelCard';
 import { Loader2 } from 'lucide-react';
+import Hyperspeed from '../../components/ui/Hyperspeed';
+import ScrollStack, { ScrollStackItem } from '../../components/ui/ScrollStack';
 // import { api } from '../../api/client'; // Assuming an api client exists
 
 // Dummy data for initial UI build
@@ -26,6 +28,10 @@ export default function AchievementsPage() {
   });
 
   return (
+    <>
+      <div className="fixed inset-0 z-[-1]">
+        <Hyperspeed />
+      </div>
     <motion.div
       variants={fadeUpVariants}
       initial="hidden"
@@ -35,8 +41,8 @@ export default function AchievementsPage() {
     >
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-light text-foreground tracking-tight mb-2">Gamification</h1>
-          <p className="text-muted-foreground">Your progression, achievements, and milestones.</p>
+          <h1 className="text-3xl font-light text-foreground tracking-tight mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Gamification</h1>
+          <p className="text-white/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">Your progression, achievements, and milestones.</p>
         </div>
       </header>
 
@@ -73,20 +79,16 @@ export default function AchievementsPage() {
             <Loader2 className="w-8 h-8 animate-spin text-zinc-500" />
           </div>
         ) : (
-          <motion.div
-            variants={staggerContainerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
+          <ScrollStack useWindowScroll={true}>
             {filtered.map((achievement) => (
-              <motion.div key={achievement.id} variants={staggerItemVariants}>
+              <ScrollStackItem key={achievement.id}>
                 <AchievementCard achievement={achievement} />
-              </motion.div>
+              </ScrollStackItem>
             ))}
-          </motion.div>
+          </ScrollStack>
         )}
       </section>
     </motion.div>
+    </>
   );
 }
