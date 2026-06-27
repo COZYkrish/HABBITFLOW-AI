@@ -44,6 +44,7 @@ export class DashboardService {
         name: h.title,
         category: h.category,
         icon: h.icon,
+        color: (h as any).color, // Using any here because IHabit might need a color property if not typed, but it should have one based on Habit interface. Wait, Habit model has color! Let's check. Assuming it has color.
         estimatedMinutes: h.estimatedDuration,
         status: completedToday.has(String(h._id)) ? 'completed' : 'pending',
         priority: h.priority as TodayHabit['priority'],

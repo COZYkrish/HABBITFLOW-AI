@@ -110,12 +110,12 @@ export class HabitService {
 
     const log = await HabitRepository.upsertLog(habitId, userId, data);
 
-    // Recalculate and update streak if completed
+    // Always recalculate habit streak to handle unchecking
+    await HabitService.recalculateStreak(habitId, userId);
+    await HabitService.recalculateUserStreak(userId);
+
+    // Gamification events only on completion
     if (data.completed) {
-      await HabitService.recalculateStreak(habitId, userId);
-      
-      // Dispatch Gamification Event (Background, so we don't await blocking the response if possible, 
-      // but for accuracy we can await it or just fire & forget. We will await it to ensure consistency.)
       try {
         const updatedHabit = await HabitRepository.findById(habitId, userId);
         const streak = updatedHabit?.statistics?.currentStreak || 1;
@@ -208,11 +208,36 @@ export class HabitService {
     habit.statistics.totalLogs = sorted.length;
     habit.statistics.lastCompletedAt = sorted[0]?.completed ? new Date(sorted[0].date) : undefined;
     await habit.save();
+  }
 
-    // Update User-level streak if this exceeds it
+  private static async recalculateUserStreak(userId: string): Promise<void> {
+    const user = await User.findById(userId).select('timezone').lean();
+    const timezone = user?.timezone || 'UTC';
+
+    const { HabitLog } = await import('./models/HabitLog');
+    const logs = await HabitLog.find({ userId, completed: true }).select('date').lean();
+    const completedDates = logs.map((l: any) => l.date);
+
+    const { StreakEngine } = await import('../analytics/engine/streak.engine');
+    
+    const todayDate = new Date();
+    const todayStr = todayDate.toLocaleDateString('en-CA', { timeZone: timezone });
+    const yesterdayDate = new Date();
+    yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+    const yesterdayStr = yesterdayDate.toLocaleDateString('en-CA', { timeZone: timezone });
+
+    const streakInfo = StreakEngine.calculateStreaks(completedDates, todayStr, yesterdayStr);
+
+    const lastCompletedAt = completedDates.length > 0 
+      ? new Date([...completedDates].sort().pop()!) 
+      : undefined;
+
     await User.findByIdAndUpdate(userId, {
-      $max: { 'statistics.longestStreak': longestStreak },
-      $set: { 'statistics.currentStreak': streak },
+      $set: { 
+        'statistics.currentStreak': streakInfo.currentStreak,
+        'statistics.lastCompletedAt': lastCompletedAt,
+      },
+      $max: { 'statistics.longestStreak': streakInfo.bestStreak },
     });
   }
 
