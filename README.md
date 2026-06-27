@@ -1,6 +1,3 @@
-<div align="center">
-  <img src="client/public/vite.svg" alt="HabitFlow AI Logo" width="120" />
-</div>
 
 <h1 align="center">HabitFlow AI</h1>
 
