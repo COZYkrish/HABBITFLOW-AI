@@ -1,6 +1,7 @@
 import { User } from '../auth/models/User';
 import { Habit } from '../habit/models/Habit';
 import { HabitLog } from '../habit/models/HabitLog';
+import { ProductivityEngine } from '../insights/engine/productivity.engine';
 import type {
   DashboardSummary,
   TodayHabit,
@@ -25,21 +26,21 @@ export class DashboardService {
     const [
       activeHabits,
       todayLogs,
-      recentLogs,
-      weeklyLogs,
+      activityLogs, // renamed from recentLogs to avoid conflict
+      recentLogs,   // 30 days of logs for productivity
     ] = await Promise.all([
       Habit.find({ userId, status: 'active', deletedAt: null }).lean(),
       HabitLog.find({ userId, date: today }).lean(),
       HabitLog.find({ userId }).sort({ createdAt: -1 }).limit(20).populate('habitId', 'title icon category').lean(),
-      DashboardService.getWeeklyLogs(userId, timezone),
+      DashboardService.getRecentLogs(userId, timezone, 30),
     ]);
 
     // ── Today's habits ───────────────────────────────────────────────────────
-    const completedToday = new Set(todayLogs.filter((l) => l.completed).map((l) => String(l.habitId)));
+    const completedToday = new Set(todayLogs.filter((l: any) => l.completed).map((l: any) => String(l.habitId)));
 
     const todayHabits: TodayHabit[] = activeHabits
-      .filter((h) => DashboardService.isScheduledToday(h.repeatSchedule, timezone))
-      .map((h) => ({
+      .filter((h: any) => DashboardService.isScheduledToday(h.repeatSchedule, timezone))
+      .map((h: any) => ({
         id: String(h._id),
         name: h.title,
         category: h.category,
@@ -51,10 +52,10 @@ export class DashboardService {
       }));
 
     // ── Recent activity ────────────────────────────────────────────────────
-    const recentActivity: ActivityItem[] = recentLogs
-      .filter((l) => l.habitId)
+    const recentActivity: ActivityItem[] = activityLogs
+      .filter((l: any) => l.habitId)
       .slice(0, 8)
-      .map((l) => {
+      .map((l: any) => {
         const habit = l.habitId as any;
         return {
           id: String(l._id),
@@ -86,11 +87,19 @@ export class DashboardService {
     }
 
     // ── Weekly summary ─────────────────────────────────────────────────────
+    const weeklyLogs = recentLogs.filter((l: any) => {
+      const today = new Date();
+      const weekAgo = new Date(today);
+      weekAgo.setDate(today.getDate() - 6);
+      const from = weekAgo.toLocaleDateString('en-CA', { timeZone: timezone });
+      return l.date >= from;
+    });
+
     const weeklySummary = DashboardService.buildWeeklySummary(weeklyLogs, activeHabits.length, currentStreak, timezone);
-    const productivityScore = DashboardService.computeProductivityScore(
-      todayHabits.filter((h) => h.status === 'completed').length,
-      todayHabits.length
-    );
+    
+    // ── Productivity Score ──────────────────────────────────────────────────
+    const productivityScoreDTO = ProductivityEngine.analyze(activeHabits as any[], recentLogs);
+    const productivityScore = productivityScoreDTO.overallScore;
 
     return {
       user: {
@@ -174,11 +183,11 @@ export class DashboardService {
     return reminders.sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt)).slice(0, 5);
   }
 
-  private static async getWeeklyLogs(userId: string, timezone: string): Promise<any[]> {
+  private static async getRecentLogs(userId: string, timezone: string, days: number = 7): Promise<any[]> {
     const today = new Date();
-    const weekAgo = new Date(today);
-    weekAgo.setDate(today.getDate() - 6);
-    const from = weekAgo.toLocaleDateString('en-CA', { timeZone: timezone });
+    const past = new Date(today);
+    past.setDate(today.getDate() - (days - 1));
+    const from = past.toLocaleDateString('en-CA', { timeZone: timezone });
     const to = today.toLocaleDateString('en-CA', { timeZone: timezone });
     return HabitLog.find({ userId, date: { $gte: from, $lte: to } }).lean();
   }
@@ -202,10 +211,5 @@ export class DashboardService {
     const completionRate = total > 0 ? Math.round((habitsCompleted / total) * 100) : 0;
 
     return { completionRate, habitsCompleted, totalHabits, streak, dailyRates };
-  }
-
-  private static computeProductivityScore(completed: number, total: number): number {
-    if (total === 0) return 0;
-    return Math.round((completed / total) * 100);
   }
 }

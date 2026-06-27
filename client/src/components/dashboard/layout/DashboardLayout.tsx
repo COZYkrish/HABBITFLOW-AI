@@ -90,7 +90,7 @@ export const DashboardLayout = () => {
                 {/* Stats row */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                   <ProgressRing
-                    value={data?.productivityScore ?? 0}
+                    value={data?.todayHabits?.length ? Math.round((data.todayHabits.filter(h => h.status === 'completed').length / data.todayHabits.length) * 100) : 0}
                     label="Daily"
                     subLabel="Completion"
                     size={130}
