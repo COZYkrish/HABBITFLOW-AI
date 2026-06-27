@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, CalendarRange, CalendarDays } from 'lucide-react';
 import { ReportViewer } from './ReportViewer';
+import PlasmaWave from '../../../components/ui/PlasmaWave';
 
 const pageTransitionVariants = {
   initial: { opacity: 0, y: 20 },
@@ -21,8 +22,21 @@ export default function ReportsPage() {
   ] as const;
 
   return (
-    <motion.div
-      variants={pageTransitionVariants}
+    <>
+      <div className="fixed inset-0 z-[-1]">
+        <PlasmaWave
+          colors={["#A855F7","#06B6D4"]}
+          speed1={0}
+          speed2={0.01}
+          focalLength={0.95}
+          bend1={1}
+          bend2={1.5}
+          dir2={-0.4}
+          rotationDeg={0}
+        />
+      </div>
+      <motion.div
+        variants={pageTransitionVariants}
       initial="initial"
       animate="animate"
       exit="exit"
@@ -75,5 +89,6 @@ export default function ReportsPage() {
         )}
       </AnimatePresence>
     </motion.div>
+    </>
   );
 }

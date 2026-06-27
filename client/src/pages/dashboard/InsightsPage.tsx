@@ -59,8 +59,8 @@ export default function InsightsPage() {
       className="max-w-5xl mx-auto space-y-8"
     >
       <header>
-        <h1 className="text-3xl font-light text-foreground tracking-tight mb-2">Intelligence Engine</h1>
-        <p className="text-muted-foreground">Deterministic, rule-based analysis of your habit logs.</p>
+        <h1 className="text-3xl font-light text-foreground tracking-tight mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Intelligence Engine</h1>
+        <p className="text-white/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">Deterministic, rule-based analysis of your habit logs.</p>
       </header>
 
       {/* Overview Grid */}
@@ -107,7 +107,7 @@ export default function InsightsPage() {
         {/* Left Column: Active Insights & Rules */}
         <div className="lg:col-span-2 space-y-6">
           <div>
-            <h2 className="text-lg font-medium text-foreground mb-4">Active Insights</h2>
+            <h2 className="text-lg font-medium text-foreground mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Active Insights</h2>
             {activeInsights.length === 0 ? (
               <div className="p-8 text-center border border-border/50 rounded-2xl border-dashed">
                 <p className="text-muted-foreground text-sm">No active insights at the moment. Keep logging your habits!</p>
@@ -132,7 +132,7 @@ export default function InsightsPage() {
         {/* Right Column: Recommendations */}
         <div className="space-y-6">
           <div>
-            <h2 className="text-lg font-medium text-foreground mb-4">Recommendations</h2>
+            <h2 className="text-lg font-medium text-foreground mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Recommendations</h2>
             {recommendations.length === 0 ? (
               <div className="p-8 text-center border border-border/50 rounded-2xl border-dashed">
                 <p className="text-muted-foreground text-sm">Your routine looks solid. No recommendations right now.</p>
@@ -146,7 +146,7 @@ export default function InsightsPage() {
               >
                 {recommendations.map(rec => (
                   <motion.div key={rec.id} variants={staggerItemVariants}>
-                    <div className="p-5 rounded-2xl border border-primary/20 bg-primary/5">
+                    <div className="glass-card p-5 rounded-2xl border border-primary/20 bg-primary/5">
                       <div className="flex items-center gap-2 mb-2">
                         <span className="text-primary text-lg">💡</span>
                         <h3 className="font-medium text-foreground text-sm">{rec.title}</h3>

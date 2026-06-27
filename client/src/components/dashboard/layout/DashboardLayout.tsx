@@ -53,25 +53,27 @@ export const DashboardLayout = () => {
     <div className="min-h-screen bg-background flex relative overflow-hidden">
       {/* Dynamic Background Effect */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <Strands
-          colors={["#F97316","#7C3AED","#06B6D4"]}
-          count={3}
-          speed={0.5}
-          amplitude={1}
-          waviness={1}
-          thickness={0.7}
-          glow={3}
-          taper={2.6}
-          spread={1}
-          intensity={0.6}
-          saturation={1.5}
-          opacity={1}
-          scale={2.6}
-          glass={false}
-          refraction={1}
-          dispersion={1}
-          glassSize={1}
-        />
+        {isDashboardRoot && (
+          <Strands
+            colors={["#F97316","#7C3AED","#06B6D4"]}
+            count={3}
+            speed={0.5}
+            amplitude={1}
+            waviness={1}
+            thickness={0.7}
+            glow={3}
+            taper={2.6}
+            spread={1}
+            intensity={0.6}
+            saturation={1.5}
+            opacity={1}
+            scale={2.6}
+            glass={false}
+            refraction={1}
+            dispersion={1}
+            glassSize={1}
+          />
+        )}
       </div>
 
       {/* Sidebar */}

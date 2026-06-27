@@ -14,7 +14,7 @@ export const InsightCard = ({ insight }: { insight: InsightDTO }) => {
   const config = severityConfig[insight.severity] || severityConfig.info;
 
   return (
-    <div className={`relative p-5 rounded-2xl border ${config.border} ${config.bg} transition-all hover:bg-foreground/[0.04]`}>
+    <div className={`glass-card relative p-5 rounded-2xl border ${config.border} ${config.bg} transition-all hover:bg-foreground/[0.04]`}>
       <div className="flex justify-between items-start mb-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl glass flex items-center justify-center text-xl shadow-inner">

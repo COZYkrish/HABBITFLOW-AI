@@ -62,7 +62,7 @@ export const LevelCard = ({ currentLevel, currentXP, xpRequired }: LevelCardProp
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-lg font-medium">{progress}%</span>
+          <span className="text-xl font-black text-foreground drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">{progress}%</span>
         </div>
       </div>
     </motion.div>
