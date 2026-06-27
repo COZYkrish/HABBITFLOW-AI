@@ -10,6 +10,7 @@ import { env } from './config/env';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 const app = express();
+app.set('trust proxy', 1); // Trust first proxy (Render load balancer)
 
 // Middleware
 app.use(helmet({
