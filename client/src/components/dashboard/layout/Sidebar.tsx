@@ -88,7 +88,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
           'fixed inset-y-0 left-0 z-50 flex flex-col',
-          'bg-background border-r border-border/50 flex-shrink-0 overflow-hidden',
+          'bg-black/20 dark:bg-black/20 backdrop-blur-3xl border-r border-white/10 shadow-[4px_0_24px_rgba(0,0,0,0.4)] flex-shrink-0 overflow-hidden',
           // On mobile, always show full width when open, hidden when closed
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
