@@ -55,7 +55,7 @@ export const RightContextPanel = ({ data }: RightContextPanelProps) => {
       </div>
 
       {/* Quote */}
-      <QuoteCard />
+      <QuoteCard offset={1} />
     </motion.aside>
   );
 };

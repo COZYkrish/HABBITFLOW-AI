@@ -1,196 +1,162 @@
 /**
- * Scene 2 — Why Habits Matter
- * Scroll-driven timeline with compound growth visualisation.
+ * Scene 2 — THE HARSH TRUTH
+ * Kinetic Typography: Hard color inversion on hover, brutalist quote reveal,
+ * massive stats grid, anti-motivation message.
  */
-import { useRef } from 'react';
 import { motion } from 'framer-motion';
+import MarqueeLib from 'react-fast-marquee';
+const Marquee = (MarqueeLib as unknown as { default: typeof MarqueeLib }).default ?? MarqueeLib;
 
-import {
-  staggerContainerVariants,
-  staggerItemVariants,
-  fadeUpVariants,
-  viewportOnce,
-} from '../../animations/variants';
+const STATS = [
+  { number: '92%', label: 'of people quit within 3 weeks' },
+  { number: '21', label: 'days to form a habit (minimum)' },
+  { number: '1%', label: 'daily improvement = 37× better in 1 year' },
+  { number: '0', label: 'willpower required — only systems' },
+];
 
-const MILESTONES = [
+const TRUTHS = [
   {
-    day: '1',
-    label: 'Day One',
-    description: 'A single decision. Small, deliberate, intentional.',
-    stat: '1',
-    statLabel: 'habit begun',
-    progress: 5,
+    id: '01',
+    title: 'MOTIVATION IS A MYTH.',
+    body: 'Motivation arrives uninvited and leaves without warning. Relying on it is the #1 reason your habits die on day 4.',
   },
   {
-    day: '7',
-    label: 'First Week',
-    description: 'The pattern becomes familiar. Resistance softens.',
-    stat: '7×',
-    statLabel: 'compound effect',
-    progress: 28,
+    id: '02',
+    title: 'YOUR BRAIN IS FIGHTING YOU.',
+    body: "The basal ganglia hardwires habits over weeks. Before that happens, every single day is a battle you'll lose without a system.",
   },
   {
-    day: '30',
-    label: 'First Month',
-    description: 'What felt forced becomes second nature.',
-    stat: '31%',
-    statLabel: 'improvement average',
-    progress: 62,
-  },
-  {
-    day: '365',
-    label: 'One Year',
-    description: 'You are no longer the same person who started.',
-    stat: '10×',
-    statLabel: 'life transformation',
-    progress: 100,
+    id: '03',
+    title: 'STREAKS ARE EVERYTHING.',
+    body: 'The pain of breaking a streak is 4× stronger than the pleasure of maintaining one. That asymmetry is your greatest weapon.',
   },
 ];
 
-
-
-function MilestoneCard({
-  milestone,
-  index,
-}: {
-  milestone: (typeof MILESTONES)[0];
-  index: number;
-}) {
-  const isRight = index % 2 !== 0;
-
-  return (
-    <motion.div
-      variants={staggerItemVariants}
-      className={`relative flex items-start gap-8 ${isRight ? 'flex-row-reverse' : ''}`}
-    >
-      {/* Timeline dot */}
-      <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center" aria-hidden="true">
-        <motion.div
-          initial={{ scale: 0 }}
-          whileInView={{ scale: 1 }}
-          viewport={viewportOnce}
-          transition={{ duration: 0.5, delay: index * 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="w-10 h-10 rounded-full border-2 border-foreground/20 bg-background flex items-center justify-center z-10"
-        >
-          <div className="w-3 h-3 rounded-full bg-foreground/60" />
-        </motion.div>
-      </div>
-
-      {/* Content card */}
-      <motion.div
-        whileHover={{ y: -4, transition: { duration: 0.3 } }}
-        className={`w-full md:w-5/12 glass-card rounded-2xl p-6 ${isRight ? 'md:ml-auto' : ''}`}
-      >
-        <div className="flex items-center gap-3 mb-3">
-          <span className="text-4xl font-thin tabular-nums text-foreground/30">
-            {milestone.day}
-          </span>
-          <div>
-            <p className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
-              {milestone.label}
-            </p>
-          </div>
-        </div>
-
-        <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-          {milestone.description}
-        </p>
-
-        {/* Mini progress bar */}
-        <div className="h-1 rounded-full bg-border overflow-hidden" aria-hidden="true">
-          <motion.div
-            className="h-full rounded-full bg-foreground/40"
-            initial={{ width: 0 }}
-            whileInView={{ width: `${milestone.progress}%` }}
-            viewport={viewportOnce}
-            transition={{ duration: 1.2, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-          />
-        </div>
-
-        <p className="mt-3 text-2xl font-thin text-foreground">
-          {milestone.stat}
-          <span className="ml-2 text-xs text-muted-foreground font-normal">{milestone.statLabel}</span>
-        </p>
-      </motion.div>
-    </motion.div>
-  );
-}
+const MARQUEE_STATS = [
+  '92% QUIT', '21 DAYS', '1% DAILY', '10× ANNUAL', '37× COMPOUNDED',
+];
 
 export default function WhyHabitsScene() {
-  const ref = useRef<HTMLElement>(null);
-
   return (
     <section
       id="why-habits"
-      ref={ref}
-      className="relative py-32 overflow-hidden"
-      aria-labelledby="why-habits-headline"
+      className="bg-kinetic-background text-kinetic-foreground relative z-10"
+      aria-labelledby="truth-headline"
     >
-      <div className="max-w-4xl mx-auto px-6">
-        {/* Header */}
-        <motion.div
-          variants={staggerContainerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          className="text-center mb-24"
+      {/* Stats marquee strip — acid yellow background */}
+      <div className="w-full bg-kinetic-accent py-4 overflow-hidden" aria-hidden="true">
+        <Marquee speed={80} gradient={false} autoFill>
+          {MARQUEE_STATS.map((s, i) => (
+            <span
+              key={i}
+              className="font-kinetic font-bold text-xl md:text-3xl tracking-tighter uppercase text-kinetic-accent-foreground mx-8"
+            >
+              {s}  ·
+            </span>
+          ))}
+        </Marquee>
+      </div>
+
+      <div className="max-w-[95vw] mx-auto px-4 md:px-8 py-32">
+        {/* Section eyebrow */}
+        <p className="font-kinetic text-sm tracking-[0.3em] uppercase text-kinetic-muted-foreground mb-8">
+          Act II — The Harsh Truth
+        </p>
+
+        {/* Massive section headline */}
+        <h2
+          id="truth-headline"
+          className="font-kinetic font-bold uppercase leading-[0.85] tracking-tighter mb-24"
+          style={{ fontSize: 'clamp(2.5rem, 8vw, 9rem)' }}
         >
-          <motion.p variants={staggerItemVariants} className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
-            The science of consistency
-          </motion.p>
-          <motion.h2
-            id="why-habits-headline"
-            variants={staggerItemVariants}
-            className="text-headline font-thin text-foreground mb-6"
-          >
-            Why habits matter
-          </motion.h2>
-          <motion.p variants={staggerItemVariants} className="text-muted-foreground max-w-md mx-auto leading-relaxed">
-            Compound growth is invisible until it's undeniable.
-          </motion.p>
-        </motion.div>
+          MOTIVATION
+          <br />
+          <span className="text-kinetic-muted-foreground">IS A</span>
+          <br />
+          MYTH.
+        </h2>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-border hidden md:block" aria-hidden="true">
+        {/* Truth cards — hard inversion on hover */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-kinetic-border">
+          {TRUTHS.map((truth) => (
             <motion.div
-              className="h-full w-full bg-gradient-to-b from-transparent via-foreground/20 to-transparent origin-top"
-              initial={{ scaleY: 0 }}
-              whileInView={{ scaleY: 1 }}
-              viewport={viewportOnce}
-              transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
-            />
-          </div>
-
-          <motion.div
-            variants={staggerContainerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            className="flex flex-col gap-12"
-          >
-            {MILESTONES.map((m, i) => (
-              <MilestoneCard key={m.day} milestone={m} index={i} />
-            ))}
-          </motion.div>
+              key={truth.id}
+              className="bg-kinetic-background p-8 md:p-12 group hover:bg-kinetic-accent transition-colors duration-300 cursor-default"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {/* Decorative number */}
+              <span
+                className="font-kinetic font-bold text-[5rem] leading-none text-kinetic-muted group-hover:text-kinetic-accent-foreground/20 transition-colors duration-300 block mb-4"
+                aria-hidden="true"
+              >
+                {truth.id}
+              </span>
+              <h3 className="font-kinetic font-bold text-2xl md:text-3xl uppercase tracking-tighter leading-none mb-6 group-hover:text-kinetic-accent-foreground transition-colors duration-300 group-hover:translate-x-2 transform">
+                {truth.title}
+              </h3>
+              <p className="font-kinetic text-base md:text-lg text-kinetic-muted-foreground leading-tight group-hover:text-kinetic-accent-foreground/80 transition-colors duration-300">
+                {truth.body}
+              </p>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Quote */}
+        {/* Giant stats row */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-kinetic-border mt-px">
+          {STATS.map((stat) => (
+            <motion.div
+              key={stat.number}
+              className="bg-kinetic-background p-8 group hover:bg-kinetic-muted transition-colors duration-300"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <p
+                className="font-kinetic font-bold text-[4rem] md:text-[6rem] leading-none tracking-tighter text-kinetic-foreground mb-2"
+                aria-label={stat.number}
+              >
+                {stat.number}
+              </p>
+              <p className="font-kinetic text-sm text-kinetic-muted-foreground uppercase tracking-widest leading-tight">
+                {stat.label}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Closing pull-quote */}
         <motion.blockquote
-          variants={fadeUpVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          className="mt-28 text-center border-l-0"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-32 border-l-4 border-kinetic-accent pl-8 max-w-3xl"
         >
-          <p className="text-2xl sm:text-3xl font-thin text-foreground/80 leading-relaxed italic">
-            "You don't rise to your goals.
+          <p className="font-kinetic font-bold text-3xl md:text-5xl uppercase tracking-tighter leading-[0.9] text-kinetic-foreground">
+            "YOU DON'T RISE TO YOUR GOALS.
             <br />
-            You fall to your systems."
+            <span className="text-kinetic-muted-foreground">
+              YOU FALL TO YOUR SYSTEMS."
+            </span>
           </p>
-          <footer className="mt-4 text-sm text-muted-foreground">— James Clear, Atomic Habits</footer>
+          <footer className="font-kinetic text-sm tracking-widest uppercase text-kinetic-muted-foreground mt-6">
+            — James Clear, Atomic Habits
+          </footer>
         </motion.blockquote>
+      </div>
+
+      {/* Scene counter */}
+      <div className="border-t-2 border-kinetic-border py-4 px-4 md:px-8 flex justify-between items-center">
+        <span className="font-kinetic text-xs tracking-[0.2em] uppercase text-kinetic-muted-foreground">
+          The Science of Consistency
+        </span>
+        <span className="font-kinetic text-xs tracking-[0.2em] uppercase text-kinetic-muted-foreground">
+          Scene 2 / 6
+        </span>
       </div>
     </section>
   );

@@ -13,17 +13,17 @@ const QUOTES: { text: string; author: string }[] = [
   { text: 'First forget inspiration. Habit is more dependable.', author: 'Octavia Butler' },
 ];
 
-const getDailyQuote = () => {
+const getDailyQuote = (offset = 0) => {
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86_400_000);
-  return QUOTES[dayOfYear % QUOTES.length];
+  return QUOTES[(dayOfYear + offset) % QUOTES.length];
 };
 
 /**
  * QuoteCard — daily rotating motivational quote.
  * Fade animation on mount. Ready for future API integration.
  */
-export const QuoteCard = () => {
-  const [quote, setQuote] = useState(getDailyQuote);
+export const QuoteCard = ({ offset = 0 }: { offset?: number }) => {
+  const [quote, setQuote] = useState(() => getDailyQuote(offset));
   const [visible, setVisible] = useState(true);
 
   // Refresh at midnight
@@ -38,7 +38,7 @@ export const QuoteCard = () => {
     const timeout = setTimeout(() => {
       setVisible(false);
       setTimeout(() => {
-        setQuote(getDailyQuote());
+        setQuote(getDailyQuote(offset));
         setVisible(true);
       }, 400);
     }, msUntilMidnight());

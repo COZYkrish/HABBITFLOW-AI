@@ -1,217 +1,185 @@
 /**
- * Scene 1 — The Problem (Hero)
- * Emotional opener with parallax, particle field, broken-streak visualisation.
+ * Scene 1 — THE WAKE-UP CALL (Hero)
+ * Background: boomerang video loop (forward → backward, 30fps canvas)
+ * Layout & colors taken from the reference prompt.
+ * Framer Motion kept only for scroll-based parallax on the canvas wrapper.
  */
 import { useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowDown } from 'lucide-react';
-import { Button } from '../../components/ui/Button';
-import { useMouseParallax } from '../../hooks/useMouseParallax';
-import {
-  staggerContainerVariants,
-  staggerItemVariants,
-  floatAnimation,
-  pulseGlowAnimation,
-} from '../../animations/variants';
+import { Sparkles, Play } from 'lucide-react';
+import MarqueeLib from 'react-fast-marquee';
+import BoomerangVideoBg from '../../components/ui/BoomerangVideoBg';
 
-const CALENDAR_FRAGMENTS = [
-  { day: 'Mon', done: true,  rotate: -8,  x: -180, y: -60 },
-  { day: 'Tue', done: true,  rotate: 4,   x: -90,  y: -100 },
-  { day: 'Wed', done: true,  rotate: -3,  x: 0,    y: -120 },
-  { day: 'Thu', done: false, rotate: 12,  x: 90,   y: -90 },
-  { day: 'Fri', done: false, rotate: -10, x: 175,  y: -55 },
+const Marquee = (MarqueeLib as unknown as { default: typeof MarqueeLib }).default ?? MarqueeLib;
+
+const BG_VIDEO =
+  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260511_131941_d136af49-e243-493a-be14-6ff3f24e09e6.mp4';
+
+const MARQUEE_ITEMS = [
+  '⬡ DAY 1',
+  '★ STREAK BROKEN',
+  '◈ HABIT MISSED',
+  '◎ POTENTIAL LOST',
+  '▤ ANOTHER EXCUSE',
+  '⬡ DAY 1',
+  '★ START OVER',
+  '◈ AGAIN.',
 ];
 
-const PARTICLES = Array.from({ length: 24 }, (_, i) => ({
-  id: i,
-  x: `${(i * 37 + 11) % 100}%`,
-  y: `${(i * 53 + 7) % 100}%`,
-  size: i % 3 === 0 ? 2 : 1,
-  delay: (i * 0.3) % 4,
-}));
-
-function CalendarFragment({
-  day,
-  done,
-  rotate,
-  x,
-  y,
-  parallaxX,
-  parallaxY,
-}: {
-  day: string;
-  done: boolean;
-  rotate: number;
-  x: number;
-  y: number;
-  parallaxX: number;
-  parallaxY: number;
-}) {
-  return (
-    <motion.div
-      style={{
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-        x: x + parallaxX * 12,
-        y: y + parallaxY * 8,
-        rotate,
-      }}
-      animate={floatAnimation}
-      initial={{ opacity: 0, scale: 0.7 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-      className={`glass-card rounded-xl px-3 py-2 text-center select-none pointer-events-none w-14
-        ${done ? 'border-foreground/20' : 'border-red-500/20 opacity-50'}`}
-    >
-      <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">{day}</p>
-      <div className={`mt-1 w-5 h-5 mx-auto rounded-full border-2 flex items-center justify-center
-        ${done ? 'border-foreground/60 bg-foreground/10' : 'border-red-400/40 bg-red-500/5'}`}>
-        {done && <div className="w-2 h-2 rounded-full bg-foreground/60" />}
-      </div>
-    </motion.div>
-  );
-}
+const NEUE_HAAS = '"Neue Haas Grotesk Display Pro 55 Roman", "Neue Haas Grotesk Text Pro", "Helvetica Neue", Helvetica, Arial, sans-serif';
 
 export default function HeroScene() {
   const navigate = useNavigate();
-  const { normalX, normalY } = useMouseParallax();
   const sectionRef = useRef<HTMLElement>(null);
-
-  const scrollToNext = () => {
-    const el = document.getElementById('why-habits');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
+  /* scroll parallax on bg */
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  });
+  const videoScale   = useTransform(scrollYProgress, [0, 1],   [1, 1.10]);
+  const heroOpacity  = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const heroY        = useTransform(scrollYProgress, [0, 0.4], [0, -40]);
 
   return (
     <section
       ref={sectionRef}
       id="hero"
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-24 pb-16"
+      className="relative w-full min-h-screen sm:h-screen overflow-hidden"
       aria-labelledby="hero-headline"
     >
-      {/* Ambient radial background */}
+      {/* ── Boomerang background video ── */}
       <motion.div
-        animate={pulseGlowAnimation}
-        className="pointer-events-none absolute inset-0 flex items-center justify-center"
+        style={{ scale: videoScale }}
+        className="absolute inset-0 w-full h-full origin-center"
+      >
+        <BoomerangVideoBg src={BG_VIDEO} className="absolute inset-0 w-full h-full" />
+      </motion.div>
+
+      {/* ── Cinematic overlays ── */}
+      {/* Top dark gradient so navbar reads clearly */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{
+          background: `
+            linear-gradient(to bottom, rgba(15,25,14,0.55) 0%, transparent 25%, transparent 55%, rgba(15,25,14,0.70) 100%),
+            linear-gradient(to right,  rgba(15,25,14,0.30) 0%, transparent 50%)
+          `,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* ── Top ticker marquee ── */}
+      <div
+        className="w-full border-b border-white/10 py-2.5 relative z-10 bg-black/20 backdrop-blur-sm"
         aria-hidden="true"
       >
-        <div className="w-[600px] h-[600px] rounded-full bg-gradient-to-br from-foreground/[0.03] via-transparent to-transparent" />
-      </motion.div>
-
-      {/* Particles */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        {PARTICLES.map((p) => (
-          <motion.div
-            key={p.id}
-            className="absolute rounded-full bg-foreground/10"
-            style={{ left: p.x, top: p.y, width: p.size, height: p.size }}
-            animate={{ opacity: [0.2, 0.6, 0.2], y: [0, -8, 0] }}
-            transition={{ duration: 3 + p.delay, repeat: Infinity, delay: p.delay, ease: 'easeInOut' as const }}
-          />
-        ))}
+        <Marquee speed={70} gradient={false} autoFill>
+          {MARQUEE_ITEMS.map((item, i) => (
+            <span
+              key={i}
+              className="text-[10px] tracking-[0.3em] uppercase text-white/35 mx-8 font-medium"
+              style={{ fontFamily: NEUE_HAAS }}
+            >
+              {item}
+            </span>
+          ))}
+        </Marquee>
       </div>
 
-      {/* Calendar fragments */}
-      <div className="pointer-events-none absolute inset-0 hidden md:flex items-center justify-center" aria-hidden="true">
-        {CALENDAR_FRAGMENTS.map((f) => (
-          <CalendarFragment
-            key={f.day}
-            {...f}
-            parallaxX={normalX}
-            parallaxY={normalY}
-          />
-        ))}
-      </div>
-
-      {/* Main content */}
+      {/* ── Hero copy — top-center ── */}
       <motion.div
-        className="relative z-10 max-w-4xl mx-auto px-6 text-center"
-        variants={staggerContainerVariants}
-        initial="hidden"
-        animate="visible"
+        style={{ opacity: heroOpacity, y: heroY }}
+        className="relative z-10 flex flex-col items-center text-center pt-16 sm:pt-20 md:pt-24 px-4 sm:px-6"
       >
-        {/* Eyebrow badge */}
-        <motion.div variants={staggerItemVariants} className="mb-8 flex justify-center">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-muted/50 text-xs font-medium text-muted-foreground tracking-widest uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-foreground/40 animate-pulse" />
-            Build Better Habits
-          </span>
-        </motion.div>
+        {/* Eyebrow */}
+        <p
+          className="text-[10px] tracking-[0.35em] uppercase mb-5 font-medium"
+          style={{ fontFamily: NEUE_HAAS, color: '#85AB8B' }}
+        >
+          Act I — The Problem
+        </p>
 
         {/* Headline */}
-        <motion.h1
+        <h1
           id="hero-headline"
-          variants={staggerItemVariants}
-          className="text-display font-thin tracking-tight text-foreground mb-4"
+          className="font-normal leading-[0.95] text-[2rem] sm:text-4xl md:text-5xl lg:text-[4.75rem] xl:text-[5.25rem] max-w-5xl"
+          style={{
+            fontFamily: NEUE_HAAS,
+            letterSpacing: '-0.035em',
+            color: '#336443',
+          }}
         >
-          Most goals don't fail
-          <br />
-          <span className="text-muted-foreground">because of ambition.</span>
-        </motion.h1>
+          Your{' '}
+          <span style={{ color: '#85AB8B' }}>Potential</span>
+          {' '}Is Rotting.
+        </h1>
 
-        <motion.p
-          variants={staggerItemVariants}
-          className="text-display font-thin tracking-tight text-foreground mb-10"
+        {/* Body copy */}
+        <p
+          className="mt-6 sm:mt-8 text-sm sm:text-base md:text-lg leading-relaxed max-w-md px-2"
+          style={{ fontFamily: NEUE_HAAS, color: '#4b5b47' }}
         >
-          They fail because{' '}
-          <em className="not-italic text-foreground/50">consistency</em>{' '}
-          disappears.
-        </motion.p>
-
-        {/* Sub */}
-        <motion.p
-          variants={staggerItemVariants}
-          className="text-base sm:text-lg text-muted-foreground font-light max-w-lg mx-auto mb-12 leading-relaxed"
-        >
-          Small actions repeated daily create extraordinary outcomes.
-          HabitFlow AI keeps you consistent — one day at a time.
-        </motion.p>
-
-        {/* CTAs */}
-        <motion.div
-          variants={staggerItemVariants}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3"
-        >
-          <Button
-            size="lg"
-            onClick={() => navigate('/auth')}
-            className="rounded-2xl px-8 h-12 text-base font-medium"
-            aria-label="Start your journey"
-          >
-            Start Your Journey
-          </Button>
-          <Button
-            variant="ghost"
-            size="lg"
-            onClick={scrollToNext}
-            className="rounded-2xl px-8 h-12 text-base font-light text-muted-foreground hover:text-foreground"
-            aria-label="Learn more about HabitFlow AI"
-          >
-            Learn More
-          </Button>
-        </motion.div>
+          Not because of your ambition — that's still intact. It's rotting
+          because you keep starting over. Day 1, again and again.
+        </p>
       </motion.div>
 
-      {/* Scroll indicator */}
-      <motion.button
-        onClick={scrollToNext}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6 }}
-        aria-label="Scroll down"
+      {/* ── Bottom-left CTA block ── */}
+      <motion.div
+        style={{ opacity: heroOpacity }}
+        className="absolute left-4 right-4 sm:right-auto sm:left-6 md:left-10 bottom-6 sm:bottom-8 md:bottom-10 z-10 max-w-sm"
       >
-        <span className="text-[10px] uppercase tracking-[0.2em] font-medium">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' as const }}
+        <div
+          className="flex items-center gap-2 mb-3"
+          style={{ color: '#3d5638' }}
         >
-          <ArrowDown size={14} />
-        </motion.div>
-      </motion.button>
+          <Sparkles className="w-4 h-4" />
+          <span
+            className="text-sm font-semibold"
+            style={{ fontFamily: NEUE_HAAS }}
+          >
+            HabitFlow AI
+          </span>
+        </div>
+
+        <p
+          className="text-xs leading-relaxed mb-5 max-w-xs"
+          style={{ fontFamily: NEUE_HAAS, color: 'rgba(61,86,56,0.85)' }}
+        >
+          HabitFlow smoothly unites your habits, tracking, and insights —
+          building consistency without the constant restart.
+        </p>
+
+        <div className="flex items-center gap-4 flex-wrap">
+          <button
+            onClick={() => navigate('/auth/register')}
+            className="text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors shadow-sm"
+            style={{
+              fontFamily: NEUE_HAAS,
+              backgroundColor: '#3d5638',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#2d4228')}
+            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#3d5638')}
+            aria-label="End the cycle — start your account"
+          >
+            End The Cycle →
+          </button>
+          <button
+            onClick={() => {
+              const el = document.getElementById('why-habits');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="text-sm font-semibold hover:opacity-70 transition-opacity"
+            style={{ fontFamily: NEUE_HAAS, color: '#3d5638' }}
+            aria-label="See why habits matter"
+          >
+            Know More.
+          </button>
+        </div>
+      </motion.div>
+
+
     </section>
   );
 }

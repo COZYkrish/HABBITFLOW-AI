@@ -14,6 +14,14 @@ const DUMMY_ACHIEVEMENTS = [
   { id: '3', title: 'Unstoppable', description: 'Maintain a 30-day streak.', icon: '⚡', tier: 'gold' as const, xpReward: 500, currentProgress: 12, targetProgress: 30, percentageComplete: 40, unlocked: false },
   { id: '4', title: 'Century', description: 'Maintain a 100-day streak.', icon: '💯', tier: 'platinum' as const, xpReward: 2000, currentProgress: 12, targetProgress: 100, percentageComplete: 12, unlocked: false },
   { id: '5', title: 'Flawless Execution', description: 'Perfect week of scheduled habits.', icon: '🎯', tier: 'gold' as const, xpReward: 400, currentProgress: 3, targetProgress: 7, percentageComplete: 42, unlocked: false },
+  { id: '6', title: 'Early Riser', description: 'Complete a habit before 6 AM.', icon: '🌅', tier: 'bronze' as const, xpReward: 100, currentProgress: 0, targetProgress: 1, percentageComplete: 0, unlocked: false },
+  { id: '7', title: 'Night Owl', description: 'Complete a habit after 10 PM.', icon: '🦉', tier: 'bronze' as const, xpReward: 100, currentProgress: 1, targetProgress: 1, percentageComplete: 100, unlocked: true },
+  { id: '8', title: 'Weekend Warrior', description: 'Maintain habits flawlessly on a weekend.', icon: '⚔️', tier: 'silver' as const, xpReward: 200, currentProgress: 1, targetProgress: 2, percentageComplete: 50, unlocked: false },
+  { id: '9', title: 'Zen Master', description: 'Log meditation for 14 consecutive days.', icon: '🧘', tier: 'gold' as const, xpReward: 600, currentProgress: 8, targetProgress: 14, percentageComplete: 57, unlocked: false },
+  { id: '10', title: 'Bookworm', description: 'Read 30 pages every day for a month.', icon: '📚', tier: 'silver' as const, xpReward: 300, currentProgress: 15, targetProgress: 30, percentageComplete: 50, unlocked: false },
+  { id: '11', title: 'Iron Will', description: 'Log a difficult habit 50 times.', icon: '🦾', tier: 'platinum' as const, xpReward: 1000, currentProgress: 23, targetProgress: 50, percentageComplete: 46, unlocked: false },
+  { id: '12', title: 'Overachiever', description: 'Complete 10 habits in a single day.', icon: '🚀', tier: 'silver' as const, xpReward: 450, currentProgress: 6, targetProgress: 10, percentageComplete: 60, unlocked: false },
+  { id: '13', title: 'The Architect', description: 'Design and track 5 custom habits.', icon: '📐', tier: 'bronze' as const, xpReward: 150, currentProgress: 5, targetProgress: 5, percentageComplete: 100, unlocked: true },
 ];
 
 export default function AchievementsPage() {
