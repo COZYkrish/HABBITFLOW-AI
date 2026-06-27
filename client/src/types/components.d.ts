@@ -1,0 +1,9 @@
+declare module '*/ColorBends';
+declare module '*/FloatingLines';
+declare module '*/LineWaves';
+declare module '*/PlasmaWave';
+declare module '*/Hyperspeed';
+declare module '*/Strands';
+declare module '*/GlassSurface';
+declare module '*/DecryptedText';
+declare module '*/ScrollStack';

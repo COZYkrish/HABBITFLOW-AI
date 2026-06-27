@@ -79,6 +79,13 @@ export const DashboardLayout = () => {
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onClose={toggleSidebar} />
 
+      {/* Spacer for fixed sidebar on desktop */}
+      <motion.div
+        animate={{ width: sidebarOpen ? 220 : 64 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="hidden lg:block flex-shrink-0"
+      />
+
       {/* Main area */}
       <div className="flex-1 flex flex-col min-w-0 relative z-10">
         <TopNavbar 

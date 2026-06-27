@@ -5,7 +5,6 @@ import { AchievementCard } from '../../components/gamification/AchievementCard';
 import { LevelCard } from '../../components/gamification/LevelCard';
 import { Loader2 } from 'lucide-react';
 import Hyperspeed from '../../components/ui/Hyperspeed';
-import ScrollStack, { ScrollStackItem } from '../../components/ui/ScrollStack';
 // import { api } from '../../api/client'; // Assuming an api client exists
 
 // Dummy data for initial UI build
@@ -79,13 +78,18 @@ export default function AchievementsPage() {
             <Loader2 className="w-8 h-8 animate-spin text-zinc-500" />
           </div>
         ) : (
-          <ScrollStack useWindowScroll={true}>
+          <motion.div
+            variants={staggerContainerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          >
             {filtered.map((achievement) => (
-              <ScrollStackItem key={achievement.id}>
+              <motion.div key={achievement.id} variants={staggerItemVariants}>
                 <AchievementCard achievement={achievement} />
-              </ScrollStackItem>
+              </motion.div>
             ))}
-          </ScrollStack>
+          </motion.div>
         )}
       </section>
     </motion.div>

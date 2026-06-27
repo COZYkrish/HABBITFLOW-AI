@@ -87,8 +87,8 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         animate={{ width: isOpen ? 220 : 64 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
-          'fixed lg:relative inset-y-0 left-0 z-30 flex flex-col',
-          'glass border-r border-border/50 flex-shrink-0 overflow-hidden',
+          'fixed inset-y-0 left-0 z-50 flex flex-col',
+          'bg-background border-r border-border/50 flex-shrink-0 overflow-hidden',
           // On mobile, always show full width when open, hidden when closed
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
