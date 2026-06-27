@@ -38,35 +38,25 @@ The application is split into two massive core layers:
 
 Below is a visual tour of the HabitFlow AI platform, showcasing our premium UI/UX design, dark glassmorphism themes, and detailed analytical components.
 
-### Act I - The Problem (Cinematic Hero)
-> *Your Potential Is Rotting. Not because of your ambition — that's still intact. It's rotting because you keep starting over. Day 1, again and again.*
-![Hero Section](./assets/hero-section.png)
-*(A full-viewport cinematic hero with looping video background, marquee banners, and deep green aesthetics.)*
-
 ### The Dashboard
 > *Your daily command center for productivity.*
 ![Dashboard](./assets/dashboard.png)
-*(Features a customized greeting, live productivity scores, daily reflection quotes, progress rings, and a sleek quick-action grid.)*
 
 ### Habit Management
 > *Manage, track, and conquer your active habits.*
 ![Habits View](./assets/habits.png)
-*(A dynamic grid displaying all active habits, colored tags, daily requirements, and quick-log buttons layered over dynamic animated Strands backgrounds.)*
 
 ### Analytics Engine
 > *Deep dive into your habit history and productivity patterns.*
 ![Analytics Dashboard](./assets/analytics.png)
-*(Showcasing the 365-day github-style activity heatmap, streak history, and overall productivity gauges.)*
 
 ### Intelligence Engine
 > *Deterministic, rule-based analysis of your habit logs.*
 ![Insights](./assets/insights.png)
-*(Burnout warnings, optimal productivity windows, and actionable recommendations generated from user behavioral data.)*
 
-### Gamification & Achievements
-> *Your progression, achievements, and milestones.*
-![Gamification](./assets/gamification.png)
-*(Level progression, XP bars, and an array of unlockable badges like 'The Journey Begins', 'Momentum', and 'Unstoppable'.)*
+### Reports & Exports
+> *Generate beautiful, printable reports of your progress.*
+![Reports](./assets/reports.png)
 
 ---
 

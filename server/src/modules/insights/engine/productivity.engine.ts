@@ -11,9 +11,14 @@ export class ProductivityEngine {
 
     const completedLogs = recentLogs.filter(l => l.completed);
     
+    // Find how many days it has been since their earliest log in this 30-day window
+    const allDates = recentLogs.map(l => new Date(l.date).getTime());
+    const minDate = allDates.length > 0 ? Math.min(...allDates) : Date.now();
+    let daysSinceFirstLog = Math.ceil((Date.now() - minDate) / (1000 * 60 * 60 * 24)) || 1;
+    daysSinceFirstLog = Math.min(30, daysSinceFirstLog);
+
     // 1. Completion Score (0-100)
-    // Assume 30 days of logs. Expected = habits.length * 30
-    const expectedCompletions = habits.length * 30;
+    const expectedCompletions = habits.length * daysSinceFirstLog;
     let completionScore = expectedCompletions > 0 
       ? (completedLogs.length / expectedCompletions) * 100 
       : 0;
@@ -24,7 +29,7 @@ export class ProductivityEngine {
     // 2. Consistency Score (0-100)
     // How many distinct days had at least one completion
     const distinctDays = new Set(completedLogs.map(l => l.date)).size;
-    let consistencyScore = (distinctDays / 30) * 100;
+    let consistencyScore = (distinctDays / daysSinceFirstLog) * 100;
     consistencyScore = Math.min(100, consistencyScore);
 
     // 3. Momentum Score (0-100)

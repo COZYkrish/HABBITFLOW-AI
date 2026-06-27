@@ -1,12 +1,9 @@
 /* eslint-disable react/no-unknown-property */
 import * as THREE from 'three';
-import { useRef, useState, useEffect, memo, ReactNode } from 'react';
+import { useRef, useState, useEffect, memo, type ReactNode } from 'react';
 import { Canvas, createPortal, useFrame, useThree } from '@react-three/fiber';
 import {
   useFBO,
-  Scroll,
-  Preload,
-  ScrollControls,
   MeshTransmissionMaterial,
 } from '@react-three/drei';
 import { easing } from 'maath';
@@ -41,9 +38,8 @@ const ModeWrapper = memo(function ModeWrapper({
   modeProps = {},
   ...props
 }: any) {
-  const ref = useRef<any>();
+  const ref = useRef<any>(null);
   const buffer = useFBO();
-  const { viewport: vp } = useThree();
   const [scene] = useState(() => new THREE.Scene());
   const geoWidthRef = useRef(1);
 

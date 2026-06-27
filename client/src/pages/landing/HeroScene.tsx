@@ -7,7 +7,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, Play } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import MarqueeLib from 'react-fast-marquee';
 import BoomerangVideoBg from '../../components/ui/BoomerangVideoBg';
 
