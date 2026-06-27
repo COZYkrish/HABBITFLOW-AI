@@ -1,96 +1,64 @@
 # HabitFlow AI
 
-> Build Better Habits. Every Single Day.
+![HabitFlow AI](/client/public/og-image.jpg)
 
-HabitFlow AI is a production-grade SaaS application designed to help users track and build better habits through an intuitive interface and AI-driven insights.
+HabitFlow AI is an intelligent, premium habit tracker that helps you build a better life through smart analytics, personalized insights, and engaging gamification. Built with the modern MERN stack.
 
-## Phase 1 - Project Foundation & Architecture
+## ✨ Features
+- **Premium Dashboard**: Glassmorphism UI, responsive design, and smooth animations.
+- **Smart Analytics**: Heatmaps, timeline charts, and completion trends.
+- **AI Insight Engine**: Personalized recommendations (e.g., Burnout warnings, Consistency boosts).
+- **Gamification**: Earn XP, level up, and unlock achievements as you build habits.
+- **Advanced Reports**: Export your data to CSV or PDF.
+- **Secure Authentication**: JWT with HTTP-only cookies, robust session management.
 
-This repository currently contains the Phase 1 implementation, focusing on the foundational architecture for both the client (React 19) and server (Express). Feature implementations like Auth, CRUD, etc., will be added in future phases.
+## 🛠️ Technology Stack
+- **Frontend**: React, TypeScript, Vite, Tailwind CSS, Framer Motion, Zustand, Recharts.
+- **Backend**: Node.js, Express, TypeScript, Mongoose, Zod, express-rate-limit.
+- **Database**: MongoDB Atlas.
 
-## Tech Stack
+## 🚀 Quick Start
 
-### Frontend
-- **React 19**
-- **TypeScript**
-- **Vite**
-- **Tailwind CSS**
-- **React Router v7**
-- **Zustand** (Global state management)
-- **TanStack Query** (Data fetching and caching)
-- **Framer Motion** & **GSAP** (Animations)
-- **React Hook Form** (Form management)
-- **Axios** (API client)
+### 1. Clone the repository
+```bash
+git clone https://github.com/yourusername/habitflow-ai.git
+cd habitflow-ai
+```
 
-### Backend
-- **Node.js** & **Express.js**
-- **TypeScript**
-- **MongoDB Atlas** & **Mongoose**
-- **Helmet**, **CORS**, **Morgan**, **Compression**
+### 2. Environment Setup
+Copy the environment example files:
+```bash
+cp server/.env.example server/.env
+cp client/.env.example client/.env
+```
+*Make sure to fill in your MongoDB connection string in `server/.env`.*
 
-## Architecture
+### 3. Install Dependencies
+```bash
+# Terminal 1: Backend
+cd server
+npm install
 
-This project is structured as a monorepo:
-- `/client`: Frontend application
-- `/server`: Backend API
+# Terminal 2: Frontend
+cd client
+npm install
+```
 
-The backend uses a feature-based modular architecture to easily scale as new features (e.g., Auth, Dashboard, Habit Tracking) are implemented.
-The frontend uses categorized component directories and a comprehensive theme token system for a luxury monochrome aesthetic.
+### 4. Run the Application
+```bash
+# Terminal 1: Backend
+npm run dev
 
-## Setup Instructions
+# Terminal 2: Frontend
+npm run dev
+```
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd habitflow-ai
-   ```
+Visit `http://localhost:5173` to see the application running.
 
-2. **Environment Variables**
-   Copy `.env.example` to `.env` in both `/client` and `/server` and fill in the values.
-   ```bash
-   cp .env.example .env
-   ```
+## 📚 Documentation
+- [Architecture Overview](./ARCHITECTURE.md)
+- [API Documentation](./API_DOCS.md)
+- [Deployment Guide](./DEPLOYMENT.md)
 
-3. **Install Dependencies**
-   *For both client and server, run the following:*
-   ```bash
-   cd client
-   npm install
-   
-   cd ../server
-   npm install
-   ```
-
-4. **Run Development Servers**
-   *Client:*
-   ```bash
-   cd client
-   npm run dev
-   ```
-   *Server:*
-   ```bash
-   cd server
-   npm run dev
-   ```
-
-## Coding Standards
-
-- Strict TypeScript, avoid `any`.
-- Follow SOLID principles.
-- Avoid duplicated code.
-- Reusable components must be generic.
-- Keep business logic separated from UI.
-- Use dependency injection where appropriate.
-
-## Future Roadmap
-- Phase 2: Cinematic Landing Page
-- Phase 3: Authentication & Security
-- Phase 4: Core Dashboard UI
-- Phase 5: Habit Management (CRUD)
-- Phase 6: Analytics & Charts
-- Phase 7: AI Insights Engine
-- Phase 8: Gamification & Achievements
-- Phase 9: Reports & Notifications
-- Phase 10: Profile & Settings
-- Phase 11: Final Polish
-- Phase 12: Production Deployment
+## 📄 License
+This project is licensed under the MIT License.

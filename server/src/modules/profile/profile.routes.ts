@@ -5,8 +5,17 @@ import { requireAuth } from '../../middleware/auth.middleware';
 import { validateRequest } from '../auth/auth.validator';
 import { updateProfileSchema, updatePreferencesSchema, changePasswordSchema } from './profile.validator';
 
+import path from 'path';
+
 const router = Router();
-const upload = multer({ dest: 'public/uploads/avatars/' });
+const storage = multer.diskStorage({
+  destination: 'public/uploads/avatars/',
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage });
 
 router.use(requireAuth);
 

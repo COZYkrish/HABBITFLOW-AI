@@ -28,7 +28,7 @@ const NAV_ITEMS: NavItem[] = [
 
 const BOTTOM_ITEMS: NavItem[] = [
   { id: 'profile', label: 'Profile', icon: '◉', href: '/dashboard/profile' },
-  { id: 'settings', label: 'Settings', icon: '◌', href: '/dashboard/settings', disabled: true },
+  { id: 'settings', label: 'Settings', icon: '◌', href: '/dashboard/settings' },
 ];
 
 const CollapseIcon = ({ isOpen }: { isOpen: boolean }) => (
