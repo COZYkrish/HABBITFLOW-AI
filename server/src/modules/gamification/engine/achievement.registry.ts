@@ -1,7 +1,6 @@
-import { Types } from 'mongoose';
+
 import { ACHIEVEMENTS } from '../constants/achievement.constants';
 import { XPEventData } from '../types/gamification.types';
-import { IUserAchievement } from '../models/UserAchievement';
 
 export type AchievementEvaluator = (
   userId: string,
@@ -33,7 +32,7 @@ export const achievementRegistry = new AchievementRegistry();
 
 // --- Register basic rules here or in a separate file ---
 
-achievementRegistry.register('FIRST_HABIT', async (userId, event, currentProgress, targetProgress) => {
+achievementRegistry.register('FIRST_HABIT', async (userId, event, currentProgress, _targetProgress) => {
   if (event.action === 'HABIT_COMPLETED') {
     return { newProgress: 1, unlocked: true };
   }
@@ -68,7 +67,7 @@ achievementRegistry.register('STREAK_100', async (userId, event, currentProgress
   return { newProgress: currentProgress, unlocked: false };
 });
 
-achievementRegistry.register('EARLY_BIRD', async (userId, event, currentProgress, targetProgress) => {
+achievementRegistry.register('EARLY_BIRD', async (userId, event, currentProgress, _targetProgress) => {
   if (event.action === 'HABIT_COMPLETED') {
     const hour = new Date().getHours();
     if (hour < 6) {
@@ -78,7 +77,7 @@ achievementRegistry.register('EARLY_BIRD', async (userId, event, currentProgress
   return { newProgress: currentProgress, unlocked: false };
 });
 
-achievementRegistry.register('NIGHT_OWL', async (userId, event, currentProgress, targetProgress) => {
+achievementRegistry.register('NIGHT_OWL', async (userId, event, currentProgress, _targetProgress) => {
   if (event.action === 'HABIT_COMPLETED') {
     const hour = new Date().getHours();
     if (hour >= 22 || hour < 4) {

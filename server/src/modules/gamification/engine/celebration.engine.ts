@@ -9,8 +9,8 @@ export interface CelebrationEvent {
 export const generateCelebrations = (
   newLevel: number | undefined,
   unlockedAchievements: string[],
-  reachedMilestones: string[],
-  completedChallenges: string[]
+  _reachedMilestones: string[],
+  _completedChallenges: string[]
 ): CelebrationEvent[] => {
   const events: CelebrationEvent[] = [];
 

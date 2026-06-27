@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import DecryptedText from '../ui/DecryptedText';
 import { motion } from 'framer-motion';
 import { fadeUpVariants } from '../../animations/variants';
 
@@ -93,8 +94,10 @@ export const WelcomeCard = ({ name }: WelcomeCardProps) => {
           transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="text-4xl md:text-5xl font-thin tracking-tight text-foreground"
         >
-          {greeting},{' '}
-          <span className="font-light">{firstName}.</span>
+          <DecryptedText text={`${greeting},`} animateOn="view" speed={60} maxIterations={15} />{' '}
+          <span className="font-light">
+            <DecryptedText text={`${firstName}.`} animateOn="view" speed={70} maxIterations={20} />
+          </span>
         </motion.h1>
 
         <motion.p

@@ -23,6 +23,8 @@ import { DeleteDialog } from '../../habits/DeleteDialog';
 import { ArchiveDialog } from '../../habits/ArchiveDialog';
 import { InsightsPreviewWidget } from '../../insights/InsightsPreviewWidget';
 import { LevelCard } from '../../gamification/LevelCard';
+import Strands from '../../ui/Strands';
+
 
 const ErrorCard = ({ message }: { message: string }) => (
   <div className="flex items-center justify-center min-h-[400px]">
@@ -48,12 +50,35 @@ export const DashboardLayout = () => {
   const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background flex relative overflow-hidden">
+      {/* Dynamic Background Effect */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <Strands
+          colors={["#F97316","#7C3AED","#06B6D4"]}
+          count={3}
+          speed={0.5}
+          amplitude={1}
+          waviness={1}
+          thickness={0.7}
+          glow={3}
+          taper={2.6}
+          spread={1}
+          intensity={0.6}
+          saturation={1.5}
+          opacity={1}
+          scale={2.6}
+          glass={false}
+          refraction={1}
+          dispersion={1}
+          glassSize={1}
+        />
+      </div>
+
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onClose={toggleSidebar} />
 
       {/* Main area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 relative z-10">
         <TopNavbar 
           user={user || { name: 'Guest' }} 
           onMenuToggle={toggleSidebar} 
