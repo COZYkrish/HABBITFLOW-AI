@@ -2,6 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": ">=18.x"
+  },
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
@@ -25,7 +28,6 @@
     "express-validator": "^7.3.2",
     "helmet": "^8.2.0",
     "jsonwebtoken": "^9.0.3",
-    "mongodb-memory-server": "^11.2.0",
     "mongoose": "^9.7.2",
     "morgan": "^1.11.0",
     "multer": "^2.2.0",
@@ -47,6 +49,7 @@
     "@types/nodemailer": "^8.0.1",
     "@types/pdfkit": "^0.17.6",
     "eslint": "^10.5.0",
+    "mongodb-memory-server": "^11.2.0",
     "prettier": "^3.8.4",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
