@@ -33,14 +33,26 @@ export const HabitCard = ({ habit }: HabitCardProps) => {
       whileHover="hover"
       className="glass-card rounded-2xl p-5 flex flex-col gap-4 cursor-default
                  transition-colors hover:bg-foreground/[0.02] relative group
-                 hover:z-50 focus-within:z-50"
+                 hover:z-50 focus-within:z-50 overflow-hidden"
       aria-label={habit.title}
     >
+      {/* Color accent bar */}
+      <div 
+        className="absolute left-0 top-0 bottom-0 w-1.5 opacity-80" 
+        style={{ backgroundColor: habit.color || 'var(--foreground)' }} 
+      />
+
       {/* Header row */}
-      <div className="flex items-start justify-between gap-2">
+      <div className="flex items-start justify-between gap-2 pl-1">
         <div className="flex items-center gap-3 min-w-0">
           {/* Icon */}
-          <div className="w-10 h-10 rounded-xl glass-card flex items-center justify-center flex-shrink-0">
+          <div 
+            className="w-10 h-10 rounded-xl glass-card flex items-center justify-center flex-shrink-0"
+            style={{ 
+              backgroundColor: habit.color ? `${habit.color}15` : undefined,
+              boxShadow: habit.color ? `inset 0 0 0 1px ${habit.color}30` : undefined
+            }}
+          >
             <span className="text-lg" aria-hidden="true">{habit.icon}</span>
           </div>
 

@@ -16,6 +16,7 @@ export interface TodayHabit {
   name: string;
   category: string;
   icon: string;
+  color: string;
   estimatedMinutes: number;
   status: 'pending' | 'completed' | 'skipped';
   priority: 'low' | 'medium' | 'high';
