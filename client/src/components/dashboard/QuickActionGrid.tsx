@@ -49,7 +49,6 @@ export const QuickActionGrid = () => {
       icon: '▤',
       description: 'Weekly & monthly summaries',
       href: '/dashboard/reports',
-      disabled: true,
     },
   ];
 
