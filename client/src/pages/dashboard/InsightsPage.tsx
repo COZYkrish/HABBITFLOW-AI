@@ -3,6 +3,7 @@ import { useInsightsOverview } from '../../hooks/useInsights';
 import { InsightCard } from '../../components/insights/InsightCard';
 import { staggerContainerVariants, staggerItemVariants, fadeUpVariants } from '../../animations/variants';
 import { Loader2, Zap, AlertTriangle, TrendingUp, CalendarDays } from 'lucide-react';
+import LineWaves from '../../components/ui/LineWaves';
 
 export default function InsightsPage() {
   const { data, isLoading, error } = useInsightsOverview();
@@ -32,8 +33,26 @@ export default function InsightsPage() {
   const { activeInsights, recommendations, productivity, weeklySummary } = data;
 
   return (
-    <motion.div
-      variants={fadeUpVariants}
+    <>
+      <div className="fixed inset-0 z-[-1]">
+        <LineWaves
+          speed={0.1}
+          innerLineCount={32}
+          outerLineCount={36}
+          warpIntensity={0.8}
+          rotation={-45}
+          edgeFadeWidth={0.05}
+          colorCycleSpeed={0.7}
+          brightness={0.2}
+          color1="#ffffff"
+          color2="#fcfafa"
+          color3="#ffffff"
+          enableMouseInteraction={true}
+          mouseInfluence={2.0}
+        />
+      </div>
+      <motion.div
+        variants={fadeUpVariants}
       initial="hidden"
       animate="visible"
       exit="hidden"
@@ -148,5 +167,6 @@ export default function InsightsPage() {
 
       </div>
     </motion.div>
+    </>
   );
 }
