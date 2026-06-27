@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../../utils/cn';
 import { AuthService } from '../../../api/auth.service';
+import GlassSurface from '../../ui/GlassSurface';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -88,13 +89,17 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
           'fixed inset-y-0 left-0 z-50 flex flex-col',
-          'bg-black/20 dark:bg-black/20 backdrop-blur-3xl border-r border-white/10 shadow-[4px_0_24px_rgba(0,0,0,0.4)] flex-shrink-0 overflow-hidden',
+          'backdrop-blur-md bg-black/10 border-r border-white/10 shadow-[4px_0_24px_rgba(0,0,0,0.4)] flex-shrink-0 overflow-hidden',
           // On mobile, always show full width when open, hidden when closed
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
         style={{ minHeight: '100%' }}
         aria-label="Main navigation"
       >
+        <div className="absolute inset-0 z-[-1] pointer-events-none">
+          <GlassSurface width="100%" height="100%" borderRadius={0} useComplex={true} />
+        </div>
+        
         {/* Logo */}
         <div className="h-14 flex items-center px-4 flex-shrink-0 border-b border-border/50">
           <div className="flex items-center gap-2.5 overflow-hidden">
