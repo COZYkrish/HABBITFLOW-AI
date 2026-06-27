@@ -55,11 +55,11 @@
 @layer utilities {
   /* Glass effect */
   .glass {
-    @apply bg-white/70 dark:bg-black/60 backdrop-blur-xl border border-white/20 dark:border-white/10;
+    @apply bg-white/70 dark:bg-black/60 backdrop-blur-md border border-white/20 dark:border-white/10;
   }
 
   .glass-card {
-    @apply bg-white/60 dark:bg-white/[0.03] backdrop-blur-2xl border border-black/[0.06] dark:border-white/[0.08];
+    @apply bg-white/60 dark:bg-black/50 backdrop-blur-md border border-black/[0.06] dark:border-white/[0.08];
   }
 
   /* Text gradient */

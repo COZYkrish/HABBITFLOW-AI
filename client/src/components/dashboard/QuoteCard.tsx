@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fadeVariants } from '../../animations/variants';
+import GlassSurface from '../ui/GlassSurface';
 
 const QUOTES: { text: string; author: string }[] = [
   { text: 'We are what we repeatedly do. Excellence, then, is not an act, but a habit.', author: 'Aristotle' },
@@ -46,7 +47,10 @@ export const QuoteCard = () => {
   }, []);
 
   return (
-    <div className="glass-card rounded-2xl p-6 flex flex-col gap-4">
+    <div className="relative z-0 overflow-hidden rounded-2xl p-6 flex flex-col gap-4">
+      <div className="absolute inset-0 z-[-1] pointer-events-none">
+        <GlassSurface width="100%" height="100%" borderRadius={16} />
+      </div>
       <span className="text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground">
         Daily Reflection
       </span>

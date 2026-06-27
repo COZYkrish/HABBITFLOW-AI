@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import GlassSurface from '../ui/GlassSurface';
 
 interface LevelCardProps {
   currentLevel: number;
@@ -13,8 +14,11 @@ export const LevelCard = ({ currentLevel, currentXP, xpRequired }: LevelCardProp
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-card rounded-3xl p-6 flex items-center justify-between relative overflow-hidden group"
+      className="relative rounded-3xl p-6 flex items-center justify-between overflow-hidden group z-0"
     >
+      <div className="absolute inset-0 z-[-1] pointer-events-none">
+        <GlassSurface width="100%" height="100%" borderRadius={24} useComplex={true} />
+      </div>
       <div className="absolute inset-0 bg-gradient-to-tr from-foreground/[0.02] to-transparent pointer-events-none" />
       
       <div className="flex flex-col z-10">

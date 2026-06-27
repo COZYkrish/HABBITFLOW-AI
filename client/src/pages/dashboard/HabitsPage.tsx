@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import FloatingLines from '../../components/ui/FloatingLines';
 import { useHabits } from '../../hooks/useHabits';
 import { useHabitStore } from '../../store/habitStore';
 import { HabitGrid } from '../../components/habits/HabitGrid';
@@ -44,8 +45,22 @@ export default function HabitsPage() {
   const hasFilters = Boolean(filters.search || filters.status || filters.category || filters.priority);
 
   return (
-    <motion.div
-      variants={fadeUpVariants}
+    <>
+      <div className="fixed inset-0 z-[-1]">
+        <FloatingLines 
+          enabledWaves={['top', 'middle', 'bottom']}
+          lineCount={10}
+          lineDistance={28}
+          bendRadius={9.5}
+          bendStrength={7.5}
+          interactive={true}
+          parallax={true}
+          animationSpeed={0.5}
+          linesGradient={['#e61717', '#f76500']}
+        />
+      </div>
+      <motion.div
+        variants={fadeUpVariants}
       initial="hidden"
       animate="visible"
       className="p-5 md:p-7 space-y-6 max-w-[1200px] mx-auto"
@@ -116,5 +131,6 @@ export default function HabitsPage() {
       )}
 
     </motion.div>
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { scaleInVariants } from '../../animations/variants';
+import GlassSurface from '../ui/GlassSurface';
 import type { WeeklySummary } from '../../types/dashboard.types';
 
 interface WeeklySummaryCardProps {
@@ -19,8 +20,11 @@ export const WeeklySummaryCard = ({ summary }: WeeklySummaryCardProps) => {
       variants={scaleInVariants}
       initial="hidden"
       animate="visible"
-      className="glass-card rounded-2xl p-6 flex flex-col gap-6"
+      className="relative z-0 overflow-hidden rounded-2xl p-6 flex flex-col gap-6"
     >
+      <div className="absolute inset-0 z-[-1] pointer-events-none">
+        <GlassSurface width="100%" height="100%" borderRadius={16} />
+      </div>
       <span className="text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground">
         Weekly Summary
       </span>

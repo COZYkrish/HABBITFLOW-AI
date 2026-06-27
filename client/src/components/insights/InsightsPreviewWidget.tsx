@@ -1,6 +1,7 @@
 import { useInsightsOverview } from '../../hooks/useInsights';
 import { Loader2, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import GlassSurface from '../ui/GlassSurface';
 
 export const InsightsPreviewWidget = () => {
   const { data, isLoading } = useInsightsOverview();
@@ -8,7 +9,10 @@ export const InsightsPreviewWidget = () => {
 
   if (isLoading) {
     return (
-      <div className="glass-card rounded-2xl p-6 flex flex-col justify-center items-center min-h-[150px]">
+      <div className="relative z-0 overflow-hidden rounded-2xl p-6 flex flex-col justify-center items-center min-h-[150px]">
+        <div className="absolute inset-0 z-[-1] pointer-events-none">
+          <GlassSurface width="100%" height="100%" borderRadius={16} />
+        </div>
         <Loader2 className="w-6 h-6 animate-spin text-zinc-500 mb-2" />
         <span className="text-xs text-muted-foreground">Loading Intelligence Engine...</span>
       </div>
@@ -23,7 +27,10 @@ export const InsightsPreviewWidget = () => {
   const criticalRisk = data.activeInsights.find(i => i.severity === 'critical' || i.severity === 'high');
 
   return (
-    <div className="glass-card rounded-2xl p-6 relative overflow-hidden group">
+    <div className="relative z-0 overflow-hidden rounded-2xl p-6 group">
+      <div className="absolute inset-0 z-[-1] pointer-events-none">
+        <GlassSurface width="100%" height="100%" borderRadius={16} />
+      </div>
       {/* Decorative background gradient */}
       <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-colors duration-500 pointer-events-none" />
       

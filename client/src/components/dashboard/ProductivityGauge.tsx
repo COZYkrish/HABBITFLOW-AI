@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { scaleInVariants } from '../../animations/variants';
 import { cn } from '../../utils/cn';
+import GlassSurface from '../ui/GlassSurface';
 
 interface ProductivityGaugeProps {
   score: number;
@@ -58,8 +59,11 @@ export const ProductivityGauge = ({ score, className }: ProductivityGaugeProps) 
       variants={scaleInVariants}
       initial="hidden"
       animate="visible"
-      className={cn('glass-card rounded-2xl p-6 flex flex-col items-center gap-2', className)}
+      className={cn('relative z-0 overflow-hidden rounded-2xl p-6 flex flex-col items-center gap-2', className)}
     >
+      <div className="absolute inset-0 z-[-1] pointer-events-none">
+        <GlassSurface width="100%" height="100%" borderRadius={16} />
+      </div>
       <span className="text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground self-start">
         Productivity Score
       </span>

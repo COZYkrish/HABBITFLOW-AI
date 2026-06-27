@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { scaleInVariants } from '../../animations/variants';
 import { cn } from '../../utils/cn';
+import GlassSurface from '../ui/GlassSurface';
 
 interface StatCardProps {
   label: string;
@@ -59,10 +60,13 @@ export const StatCard = ({
       transition={{ delay }}
       whileHover={{ y: -3, transition: { duration: 0.25 } }}
       className={cn(
-        'glass-card rounded-2xl p-6 flex flex-col gap-3 cursor-default select-none',
+        'relative z-0 overflow-hidden rounded-2xl p-6 flex flex-col gap-3 cursor-default select-none',
         className
       )}
     >
+      <div className="absolute inset-0 z-[-1] pointer-events-none">
+        <GlassSurface width="100%" height="100%" borderRadius={16} />
+      </div>
       <div className="flex items-center justify-between">
         <span className="text-xs font-medium tracking-[0.15em] uppercase text-muted-foreground">
           {label}

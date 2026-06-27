@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '../../utils/cn';
+import GlassSurface from '../ui/GlassSurface';
 
 interface ProgressRingProps {
   /** Value 0–max */
@@ -58,6 +59,9 @@ export const ProgressRing = ({
       role="img"
       aria-label={`Progress: ${displayValue}%`}
     >
+      <div className="absolute inset-0 z-[-1] pointer-events-none">
+        <GlassSurface width="100%" height="100%" borderRadius={16} />
+      </div>
       <div className="relative" style={{ width: size, height: size }}>
         <svg
           width={size}

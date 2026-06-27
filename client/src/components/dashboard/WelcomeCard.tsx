@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import DecryptedText from '../ui/DecryptedText';
+import GlassSurface from '../ui/GlassSurface';
 import { motion } from 'framer-motion';
 import { fadeUpVariants } from '../../animations/variants';
 
@@ -56,8 +57,11 @@ export const WelcomeCard = ({ name }: WelcomeCardProps) => {
       variants={fadeUpVariants}
       initial="hidden"
       animate="visible"
-      className="glass-card rounded-3xl p-8 md:p-10 relative overflow-hidden min-h-[220px] flex flex-col justify-between"
+      className="rounded-3xl p-8 md:p-10 relative overflow-hidden min-h-[220px] flex flex-col justify-between z-0"
     >
+      <div className="absolute inset-0 z-[-1] pointer-events-none">
+        <GlassSurface width="100%" height="100%" borderRadius={24} useComplex={true} />
+      </div>
       {/* Animated background shapes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <motion.div

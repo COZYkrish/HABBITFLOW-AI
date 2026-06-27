@@ -24,7 +24,7 @@ import { ArchiveDialog } from '../../habits/ArchiveDialog';
 import { InsightsPreviewWidget } from '../../insights/InsightsPreviewWidget';
 import { LevelCard } from '../../gamification/LevelCard';
 import Strands from '../../ui/Strands';
-
+import GlassSurface from '../../ui/GlassSurface';
 
 const ErrorCard = ({ message }: { message: string }) => (
   <div className="flex items-center justify-center min-h-[400px]">
@@ -120,7 +120,7 @@ export const DashboardLayout = () => {
                     subLabel="Completion"
                     size={130}
                     strokeWidth={8}
-                    className="glass-card rounded-2xl p-5"
+                    className="relative z-0 overflow-hidden rounded-2xl p-5"
                   />
                   <StatCard
                     label="Current Streak"
@@ -142,7 +142,9 @@ export const DashboardLayout = () => {
                 {/* Dashboard Main Grid */}
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
                   {/* Left Column: Today's Habits */}
-                  <div className="glass-card rounded-2xl p-6 h-full flex flex-col">
+                  <div className="relative rounded-2xl p-6 h-full flex flex-col z-0">
+                    <div className="absolute inset-0 z-[-1] pointer-events-none glass-card rounded-2xl">
+                    </div>
                     <SectionTitle title="Today's Habits" subtitle={`${data?.todayHabits?.length ?? 0} scheduled`} />
                     <div className="flex-1 min-h-0">
                       <TodayHabits habits={data?.todayHabits ?? []} />
@@ -150,7 +152,10 @@ export const DashboardLayout = () => {
                   </div>
 
                   {/* Middle Column: Quick Actions */}
-                  <div className="glass-card rounded-2xl p-6 h-full flex flex-col">
+                  <div className="relative rounded-2xl p-6 h-full flex flex-col z-0">
+                    <div className="absolute inset-0 z-[-1] pointer-events-none">
+                      <GlassSurface width="100%" height="100%" borderRadius={16} />
+                    </div>
                     <SectionTitle title="Quick Actions" />
                     <div className="flex-1 min-h-0 h-full">
                       <QuickActionGrid />
@@ -167,11 +172,17 @@ export const DashboardLayout = () => {
 
                 {/* Activity + Reminders */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <div className="glass-card rounded-2xl p-6">
+                  <div className="relative rounded-2xl p-6 z-0">
+                    <div className="absolute inset-0 z-[-1] pointer-events-none">
+                      <GlassSurface width="100%" height="100%" borderRadius={16} />
+                    </div>
                     <SectionTitle title="Recent Activity" />
                     <ActivityTimeline items={data?.recentActivity ?? []} />
                   </div>
-                  <div className="glass-card rounded-2xl p-6">
+                  <div className="relative rounded-2xl p-6 z-0">
+                    <div className="absolute inset-0 z-[-1] pointer-events-none">
+                      <GlassSurface width="100%" height="100%" borderRadius={16} />
+                    </div>
                     <SectionTitle title="Upcoming Reminders" />
                     <ReminderList />
                   </div>
