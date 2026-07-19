@@ -25,7 +25,6 @@ export const getAchievements = async (req: AuthRequest, res: Response, next: Nex
     next(error);
   }
 };
-
 export const getChallenges = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id;
@@ -38,17 +37,17 @@ export const getChallenges = async (req: AuthRequest, res: Response, next: NextF
   }
 };
 
-export const getDailyGoal = async (req: AuthRequest, res: Response, next: NextFunction) => {
-  try {
-    const userId = req.user?.id;
-    if (!userId) throw Object.assign(new Error('Unauthorized'), { statusCode: 401 });
+// export const getDailyGoal = async (req: AuthRequest, res: Response, next: NextFunction) => {
+//   try {
+//     const userId = req.user?.id;
+//     if (!userId) throw Object.assign(new Error('Unauthorized'), { statusCode: 401 });
 
-    const goal = await gamificationService.getDailyGoal(userId);
-    res.status(200).json({ success: true, data: goal });
-  } catch (error) {
-    next(error);
-  }
-};
+//     const goal = await gamificationService.getDailyGoal(userId);
+//     res.status(200).json({ success: true, data: goal });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 export const recalculateXP = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
@@ -62,7 +61,7 @@ export const recalculateXP = async (req: AuthRequest, res: Response, next: NextF
       action: 'MANUAL_RECALCULATION',
       xpAmount: 0
     });
-    
+
     res.status(200).json({ success: true, data: result });
   } catch (error) {
     next(error);
